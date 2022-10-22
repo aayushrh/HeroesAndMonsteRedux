@@ -5,6 +5,7 @@ public class Driver{
     public static final String GREEN_BOLD_BRIGHT = "\033[1;92m"; // GREEN
     public static final String BLUE_BOLD_BRIGHT = "\033[1;94m";  // BLUE
     public static final String PURPLE_BOLD_BRIGHT = "\033[1;95m";// PURPLE
+    public static final String IDK = "\\u001b[41m";
     public static int mapw = 30;
     public static int maph = 30;
     public static double looking_distance = 2.5;
@@ -382,7 +383,13 @@ public class Driver{
             }else if (hero.getMonstersdefeated() >= 15 && hero.getHolding_space() < 20){
                 hero.setHolding_space(20);
                 System.out.println("\nYou bag got upgraded to 20 holding space\n");
-                System.out.println("!The first boss has spawned!\n");
+                System.out.println("You've done it\n" +
+                        "You killed all the Monsters\n" +
+                        "The soulless being the ravaged your village\n" +
+                        "But Wait\n" +
+                        "In the distance you see another orc\n" +
+                        "It doesn't look like the other however\n" +
+                        "It looks a little more ... distinguished\n");
                 int x = 0;
                 int y = 0;
                 while(true) {
@@ -400,13 +407,20 @@ public class Driver{
             }else if (hero.getMonstersdefeated() >= 16 && hero.getHolding_space() < 25){
                 hero.setHolding_space(25);
                 System.out.println("\nYou bag got upgraded to 25 holding space\n");
-                System.out.println("Congrats on beating the first boss \n");
+                System.out.println("'Argh', cried the Monster\n" +
+                        "'You can speak!, Who are you', you ask\n" +
+                        "'I am  lieutenant of the forces of Darksied'\n" +
+                        "'Doesn't matter' you say, 'You are stopped now'\n" +
+                        "it chuckles 'You will never stop us, I am but a pawn'\n" +
+                        "Look like you job isn' done yet\n");
                 System.out.println("All the TownsPeople have been restocked \n");
                 hero.setMoney(hero.getMoney() + 100);
                 entities = restockVillagers(entities, 2);
                 spawn(entities, 8, 7);
             }else if (hero.getMonstersdefeated() >= 21){
-                System.out.println("\n!The second boss has spawned!\n");
+                System.out.println("You find the King of the Goblin\n" +
+                        "Now is your chance\n" +
+                        "To end it all once and for all\n");
                 int x = 0;
                 int y = 0;
                 while(true) {
@@ -424,7 +438,17 @@ public class Driver{
             }else if (hero.getMonstersdefeated() >= 22 && hero.getHolding_space() != 30){
                 hero.setHolding_space(30);
                 System.out.println("\nYou bag got upgraded to 30 holding space\n");
-                System.out.println("\nYou finished the game!\n");
+                System.out.println("It's Dead\n" +
+                        "You look around and realize you are in what seems ot be a plannign room\n" +
+                        "but what were they planning\n" +
+                        "You look around the walls and see .. Defense formations?\n" +
+                        "That doesnt seem very Monster like\n" +
+                        "You look more closely and you see they were fighting the forces of Darksied\n" +
+                        "Wait aminutes, those were the forces you were going to fight.\n" +
+                        "You look even moe and relize the the forces of Darksied are far greater\n" +
+                        "than you could ever imagines\n" +
+                        "'Oh no, what have I done?\n" +
+                        "--- THE END ---");
                 entities = restockVillagers(entities, 2);
                 hero.setMoney(hero.getMoney() + 150);
                 finale_boss = true;
