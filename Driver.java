@@ -400,7 +400,7 @@ public class Driver{
                         break;
                     }
                 }
-                Monster m = new Monster(300, x, y, 0, 'V');
+                Monster m = new Monster(200, x, y, 0, 'V');
                 m.equip(new Weapon(2, 0, 40, 60, "Gold Sword"));
                 m.equip(new Armor(4, 0, 1, "T-shirt"));
                 m.equip(new Shoes(2, 0, 20, "Sandals"));
@@ -431,7 +431,7 @@ public class Driver{
                         break;
                     }
                 }
-                Monster m = new Monster(600, x, y, 0, 'V');
+                Monster m = new Monster(400, x, y, 0, 'V');
                 m.equip(new Weapon(2, 0, 100, 110, "Platinum Blade"));
                 m.equip(new Armor(4, 0, 0.8, "Chainmail"));
                 m.equip(new Shoes(2, 0, 20, "Iron boots"));
