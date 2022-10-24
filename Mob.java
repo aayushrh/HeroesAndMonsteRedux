@@ -53,16 +53,18 @@ public abstract class Mob {
     }
 
     public boolean loseHealth(int health){
-        if(this.getArmor() == null) {
+        if(this.getArmor() == null || this.getArmor().getDamage_reduction() == 1) {
             this.health -= health;
         }else{
             this.health -= health * this.getArmor().getDamage_reduction();
+            System.out.print("But the armor reduced it to: " + health * this.getArmor().getDamage_reduction() + "\n");
         }
         return this.health <= 0;
     }
 
     public void gainHealth(int health){
         this.health += health;
+        this.health = Math.min(this.health, this.max_health);
     }
 
     public int getHealth() {

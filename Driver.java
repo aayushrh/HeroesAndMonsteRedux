@@ -97,7 +97,7 @@ public class Driver{
     }
 
     public static void spawn(List<Object> entities, int regs, int supers){
-        for (int i = 0; i < 10; i++){
+        for (int i = 0; i < regs; i++){
             int x = 0;
             int y = 0;
             while(true) {
@@ -113,7 +113,7 @@ public class Driver{
             m.equip(new Shoes(2, 0, (int) (Math.random() * 3), "Leather Shoes"));
             entities.add(m);
         }
-        for (int i = 0; i < 5; i++){
+        for (int i = 0; i < supers; i++){
             int x = 0;
             int y = 0;
             while(true) {
@@ -145,7 +145,7 @@ public class Driver{
     }
 
     public static void the_finale_boss(Hero hero) {
-        System.out.println("\nYou have found the true final boss\n");
+        System.out.println("\nYou have found the true Goblin King\n");
         Scanner scan = new Scanner(System.in);
         maph = 10;
         mapw = 10;
@@ -245,11 +245,12 @@ public class Driver{
                             if (hero.getShoes() != null) {
                                 if (num > hero.getShoes().getSpeed()) {
                                     int dmg = mon.getSword().getDamage();
-                                    if (hero.loseHealth(dmg)) {
+                                    if (hero.getHealth() - dmg <= 0) {
                                         System.out.println("\nThe monster killed you\n");
                                         System.exit(0);
                                     } else {
                                         System.out.println("\nThe Monster dealt " + dmg + " damage\n");
+                                        hero.loseHealth(dmg);
                                     }
                                 } else {
                                     System.out.println("\nThe Monster missed\n");
@@ -464,6 +465,7 @@ public class Driver{
                             int int_input_f = 0;
                             while(true) {
                                 System.out.println(mon);
+                                System.out.println("Your Health: " + hero.getHealth());
                                 System.out.println("\n1.Fight\n" +
                                         "2.Parry\n" +
                                         "3.Potion\n" +
