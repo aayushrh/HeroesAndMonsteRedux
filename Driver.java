@@ -129,7 +129,7 @@ public class Driver{
             m.equip(new Shoes(2, 0, (int) (Math.random() * 5), "Leather Shoes"));
             entities.add(m);
         }
-        for (int k = 0; k < 5; k++){
+        for (int k = 0; k < 10; k++){
             int x = 0;
             int y = 0;
             while(true) {
