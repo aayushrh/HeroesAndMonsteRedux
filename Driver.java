@@ -152,7 +152,7 @@ public class Driver{
         hero.setX(5);
         hero.setY(1);
         List<Object> entities = new ArrayList<Object>();
-        Monster finale_boss = new Monster(600, 5, 5, 0, 'V');
+        Monster finale_boss = new Monster(2000, 5, 5, 0, 'V');
         finale_boss.equip(new Weapon(2, 0, 150, 175, "Ultimate Sword"));
         finale_boss.equip(new Armor(4, 0, 0.75, "Ruby Armor"));
         finale_boss.equip(new Shoes(2, 0, 20, "Crowned Shoes"));
@@ -167,6 +167,7 @@ public class Driver{
                         int int_input_f = 0;
                         while (true) {
                             System.out.println(mon);
+                            System.out.println("Your Health: " + hero.getHealth());
                             System.out.println("\n1.Fight\n" +
                                     "2.Parry\n" +
                                     "3.Potion\n" +
@@ -360,7 +361,7 @@ public class Driver{
             v.restock(1);
             entities.add(v);
         }
-        boolean finale_boss = false;
+        boolean finale_boss = true;
         boolean intro = false;
         while(true) {
             int intinput_one = 0;
