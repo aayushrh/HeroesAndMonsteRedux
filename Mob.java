@@ -162,10 +162,6 @@ public abstract class Mob {
     public Shoes getShoes(){
         return (Shoes)this.holding[3];
     }
-
-    public void armorGone(){
-        holding[1] = null;
-    }
     public void shieldGone(){
         holding[2] = null;
     }

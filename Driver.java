@@ -152,7 +152,7 @@ public class Driver{
         hero.setX(5);
         hero.setY(1);
         List<Object> entities = new ArrayList<Object>();
-        Monster finale_boss = new Monster(1000, 5, 5, 0, 'V');
+        Monster finale_boss = new Monster(600, 5, 5, 0, 'V');
         finale_boss.equip(new Weapon(2, 0, 150, 175, "Ultimate Sword"));
         finale_boss.equip(new Armor(4, 0, 0.75, "Ruby Armor"));
         finale_boss.equip(new Shoes(2, 0, 20, "Crowned Shoes"));
@@ -190,8 +190,8 @@ public class Driver{
                         } else if (int_input_f == 2) {
                             hit = false;
                             if (hero.getShield() != null) {
-                                int num_c = (int) (Math.random() * 3);
-                                if (num_c < 2) {
+                                int num_c = (int) (Math.random() * 5);
+                                if (num_c < 5) {
                                     if (hero.loseHealth(mon.getSword().getDamage() - hero.getShield().getBlock())) {
                                         System.out.println("\nYou died");
                                         System.exit(0);
@@ -418,7 +418,9 @@ public class Driver{
                 hero.setMoney(hero.getMoney() + 100);
                 entities = restockVillagers(entities, 2);
                 spawn(entities, 8, 7);
-            }else if (hero.getMonstersdefeated() >= 21){
+            }else if (hero.getMonstersdefeated() >= 31 && hero.getHolding_space() < 30){
+                hero.setHolding_space(30);
+                System.out.println("\nYou bag got upgraded to 30 holding space\n");
                 System.out.println("You find the King of the Goblin\n" +
                         "Now is your chance\n" +
                         "To end it all once and for all\n");
@@ -436,8 +438,8 @@ public class Driver{
                 m.equip(new Armor(4, 0, 0.8, "Chainmail"));
                 m.equip(new Shoes(2, 0, 20, "Iron boots"));
                 entities.add(m);
-            }else if (hero.getMonstersdefeated() >= 22 && hero.getHolding_space() != 30){
-                hero.setHolding_space(30);
+            }else if (hero.getMonstersdefeated() >= 32 && hero.getHolding_space() < 35){
+                hero.setHolding_space(35);
                 System.out.println("\nYou bag got upgraded to 30 holding space\n");
                 System.out.println("It's Dead\n" +
                         "You look around and realize you are in what seems ot be a plannign room\n" +
@@ -489,8 +491,8 @@ public class Driver{
                             }else if (int_input_f == 2){
                                 hit = false;
                                 if(hero.getShield() != null){
-                                    int num_c = (int)(Math.random() * 3);
-                                    if(num_c < 2) {
+                                    int num_c = (int)(Math.random() * 5);
+                                    if(num_c < 5) {
                                         if (hero.loseHealth(mon.getSword().getDamage() - hero.getShield().getBlock())) {
                                             System.out.println("\nYou died");
                                             System.exit(0);
