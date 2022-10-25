@@ -16,6 +16,10 @@ public class Weapon extends Equipment{
         return inflicts;
     }
 
+    public void setInflicts(String inflicts) {
+        this.inflicts = inflicts;
+    }
+
     public int getDamage() {
         return (int)(Math.random() * (maxdamage - mindamage) + mindamage);
     }

@@ -155,193 +155,6 @@ public class Driver{
         }
     }
 
-    public static void the_finale_boss(Hero hero) {
-        System.out.println("\nYou have found the true Goblin King\n");
-        Scanner scan = new Scanner(System.in);
-        maph = 10;
-        mapw = 10;
-        hero.setX(5);
-        hero.setY(1);
-        List<Object> entities = new ArrayList<Object>();
-        Monster finale_boss = new Monster(1000, 5, 5, 0, 'V');
-        finale_boss.equip(new Weapon(2, 0, 150, 175, "Ultimate Sword", "Attack Down"));
-        finale_boss.equip(new Armor(4, 0, 0.75, "Ruby Armor"));
-        finale_boss.equip(new Shoes(2, 0, 20, "Crowned Shoes"));
-        entities.add(finale_boss);
-        while (true) {
-            Object o = check(hero.getX(), hero.getY(), entities);
-            Mob m = (Mob) (o);
-            if (m != null) {
-                if (m.getType().substring(1).equals("Monster")) {
-                    Monster mon = (Monster) (m);
-                    while (true) {
-                        int int_input_f = 0;
-                        while (true) {
-                            System.out.println(mon);
-                            System.out.println("Your Health: " + hero.getHealth() +
-                                    "\n" + "Status Effect: " + hero.getStatusEffect());
-                            System.out.println("\n1.Fight\n" +
-                                    "2.Parry\n" +
-                                    "3.Potion\n" +
-                                    "4.Escape");
-                            String input_f = scan.nextLine();
-                            if (input_f.equals("1") || input_f.equals("2") || input_f.equals("3") || input_f.equals("4")) {
-                                int_input_f = Integer.parseInt(input_f);
-                            }
-                            if (int_input_f != 0) {
-                                break;
-                            } else {
-                                System.out.println("\nPlease input the options you have\n");
-                            }
-                        }
-                        boolean hit = true;
-                        if (int_input_f == 1) {
-                            if (fight(hero, mon)) {
-                                entities.remove(o);
-                                break;
-                            }
-                        } else if (int_input_f == 2) {
-                            hit = false;
-                            if (hero.getShield() != null) {
-                                int num_c = (int) (Math.random() * 5);
-                                if (num_c < 5) {
-                                    if (hero.loseHealth(mon.getSword().getDamage() - hero.getShield().getBlock())) {
-                                        System.out.println("\nYou died");
-                                        System.exit(0);
-                                    } else {
-                                        System.out.println("\nYou blocked " + hero.getShield().getBlock() + " damage\n");
-                                        if (fight(hero, mon)) {
-                                            entities.remove(o);
-                                            break;
-                                        }
-                                    }
-                                } else {
-                                    hit = true;
-                                    System.out.println("\nYou missed the block and took 20 damage\n");
-                                    if (hero.loseHealth(20)) {
-                                        System.out.println("\nYou died\n");
-                                        System.exit(0);
-                                    }
-                                    if (fight(hero, mon)) {
-                                        entities.remove(o);
-                                        break;
-                                    }
-                                }
-                            } else {
-
-                                System.out.println("\nYou do not have a shield\n");
-                            }
-                        } else if (int_input_f == 3) {
-                            hero.potionUse();
-                            hit = false;
-                        } else if (int_input_f == 4) {
-                            int num = (int) (Math.random() * 5) + 1;
-                            System.out.println("Num: " + num + ", Shoes" + hero.getShoes());
-                            if (hero.getShoes() == null) {
-                                if (num > (mon.getShoes().getSpeed())) {
-                                    System.out.println("\nYou escaped\n");
-                                    break;
-                                } else {
-                                    System.out.println("\nYou failed to escape");
-                                }
-                            } else {
-                                if (num > (mon.getShoes().getSpeed() - hero.getShoes().getSpeed())) {
-                                    System.out.println("\nYou escaped\n");
-                                    break;
-                                } else {
-                                    System.out.println("\nYou failed to escape, you should consider getting shoes");
-                                }
-                            }
-                        }
-                        if (hit) {
-                            int num = (int) (Math.random() * 50);
-                            if (hero.getShoes() != null) {
-                                if (num > hero.getShoes().getSpeed()) {
-                                    int dmg = mon.getSword().getDamage();
-                                    hero.setStatusEffect(mon.getSword().getInflicts());
-                                    if (hero.getHealth() - dmg <= 0) {
-                                        System.out.println("\nThe monster killed you\n");
-                                        System.exit(0);
-                                    } else {
-                                        System.out.println("\nThe Monster dealt " + dmg + " damage\n");
-                                        hero.loseHealth(dmg);
-                                    }
-                                } else {
-                                    System.out.println("\nThe Monster missed\n");
-                                }
-                            } else {
-                                int dmg = mon.getSword().getDamage();
-                                hero.setStatusEffect(mon.getSword().getInflicts());
-                                if (hero.loseHealth(dmg)) {
-                                    System.out.println("\nThe monster killed you\n");
-                                    System.exit(0);
-                                } else {
-                                    System.out.println("\nThe Monster dealt " + dmg + " damage\n");
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            int intinput_one = 0;
-            printMap(hero, entities);
-            while(true){
-                System.out.println("WASD to move\n" +
-                        "1 for potion\n" +
-                        "2 to view stats\n");
-                String input_one = scan.nextLine();
-                if (input_one.toLowerCase().equals("w")) {
-                    intinput_one = 1;
-                } else if (input_one.toLowerCase().equals("s")) {
-                    intinput_one = 2;
-                } else if (input_one.toLowerCase().equals("a")) {
-                    intinput_one = 3;
-                } else if (input_one.toLowerCase().equals("d")) {
-                    intinput_one = 4;
-                } else if (input_one.equals("1")) {
-                    intinput_one = 5;
-                } else if (input_one.equals("2")) {
-                    intinput_one = 6;
-                }
-                if(intinput_one != 0){
-                    break;
-                }
-                else{
-                    System.out.println("\nPlease choose an actual option\n");
-                }
-            }
-            if(intinput_one == 1){
-                if(hero.getY() >= 0) {
-                    hero.move(0, -1);
-                }else{
-                    System.out.println("\nYou are going out of bounds\n");
-                }
-            }else if (intinput_one == 2){
-                if(hero.getY() < maph - 1) {
-                    hero.move(0, 1);
-                }else{
-                    System.out.println("\nYou are going out of bounds\n");
-                }
-            }else if (intinput_one == 3){
-                if(hero.getX() >= 0){
-                    hero.move(-1, 0);
-                }else{
-                    System.out.println("\nYou are going out of bounds\n");
-                }
-            }else if (intinput_one == 4){
-                if(hero.getX() < mapw - 1){
-                    hero.move(1, 0);
-                }else{
-                    System.out.println("\nYou are going out of bounds\n");
-                }
-            }else if (intinput_one == 5){
-                hero.potionUse();
-            } else if (intinput_one == 6){
-                System.out.println(hero);
-            }
-        }
-    }
-
     public static List<Object> restockVillagers(List<Object> entities, int num){
         for(Object i : entities){
             Mob m = (Mob)(i);
@@ -374,6 +187,19 @@ public class Driver{
             TownsPerson v = new TownsPerson(20, x, y);
             v.restock(1);
             entities.add(v);
+        }
+        for (int k = 0; k < 2; k++){
+            int x = 0;
+            int y = 0;
+            while(true) {
+                x = (int) (Math.random() * mapw);
+                y = (int) (Math.random() * maph);
+                if(check(x, y, entities) == null){
+                    break;
+                }
+            }
+            Blacksmith b = new Blacksmith(x, y);
+            entities.add(b);
         }
         boolean finale_boss = true;
         boolean intro = false;
@@ -756,6 +582,21 @@ public class Driver{
                         }else{
                             System.out.println("\nYou did not pick it up\n");
                         }
+                    }else if (m.getType().equals("Blacksmith")){
+                        Blacksmith b = (Blacksmith)(m);
+                        int int_input_b = 0;
+                        while(true) {
+                            System.out.println("\nDo you want to reforge your sword\n1.Yes\n2.No\n");
+                            String input_b = scan.nextLine();
+                            if(input_b.equals("1") || input_b.equals("2")){
+                                int_input_b = Integer.parseInt(input_b);
+                                break;
+                            }
+                        }
+                        if(int_input_b == 1){
+                            hero.equip(b.reforge(hero.getSword()));
+                            System.out.println("\nYou sword got reforged\n");
+                        }
                     }
                 }
                 printMap(hero, entities);
@@ -794,7 +635,17 @@ public class Driver{
                     if(!finale_boss) {
                         System.out.println("\nYou are going out of bounds\n");
                     }else{
-                        the_finale_boss(hero);
+                        System.out.println("\nYou have found the true Goblin King\n");
+                        maph = 10;
+                        mapw = 10;
+                        hero.setX(5);
+                        hero.setY(1);
+                        entities = new ArrayList<Object>();
+                        Monster finale_boss_mon = new Monster(1000, 5, 5, 0, 'V');
+                        finale_boss_mon.equip(new Weapon(2, 0, 150, 175, "Ultimate Sword", "Attack Down"));
+                        finale_boss_mon.equip(new Armor(4, 0, 0.75, "Ruby Armor"));
+                        finale_boss_mon.equip(new Shoes(2, 0, 20, "Crowned Shoes"));
+                        entities.add(finale_boss);
                     }
                 }
             }else if (intinput_one == 2){

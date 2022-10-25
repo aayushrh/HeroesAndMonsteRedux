@@ -4,6 +4,7 @@ public abstract class Equipment {
     private String type;
     private String name;
 
+
     public Equipment(int space_taken, int cost, String type, String name) {
         this.space_taken = space_taken;
         this.cost = cost;
@@ -13,6 +14,10 @@ public abstract class Equipment {
 
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getCost() {
