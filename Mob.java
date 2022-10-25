@@ -6,6 +6,10 @@ public abstract class Mob {
     private int x;
     private int y;
     private String type;
+    private String statusEffect;
+    private int statusCounter;
+    //temp vars
+    private double prevArmor;
 
     private boolean interacted;
 
@@ -18,6 +22,48 @@ public abstract class Mob {
         this.y = y;
         this.type = type;
         this.interacted = false;
+        this.statusEffect = "None";
+    }
+
+    public boolean setStatusEffect(String statusEffect) {
+        if(this.statusEffect.equals("None")) {
+            this.statusEffect = statusEffect;
+            this.statusCounter = 0;
+        }else{
+            return false;
+        }
+        return true;
+    }
+
+    public String getStatusEffect() {
+        return statusEffect;
+    }
+
+    public void update(){
+        this.statusCounter++;
+        if(this.statusEffect.equals("Burn")){
+            this.loseHealth(5);
+            if(this.statusCounter > 5){
+                this.statusEffect = "None";
+            }
+        }else if (this.statusEffect.equals("Armor Down")){
+            if(this.statusCounter == 1) {
+                prevArmor = this.getArmor().getDamage_reduction();
+                this.getArmor().setDamage_reduction(1);
+            }else if (this.statusCounter >= 3){
+                this.statusEffect = "None";
+                this.getArmor().setDamage_reduction(prevArmor);
+            }
+        }else if (this.statusEffect.equals("Attack Down")){
+            if(this.statusCounter == 1) {
+                this.getSword().setMaxdamage((int)(this.getSword().getMaxdamage() / 1.2));
+                this.getSword().setMaxdamage((int)(this.getSword().getMindamage() / 1.2));
+            }else if (this.statusCounter >= 3){
+                this.statusEffect = "None";
+                this.getSword().setMaxdamage((int)(this.getSword().getMaxdamage() * 1.2));
+                this.getSword().setMaxdamage((int)(this.getSword().getMindamage() * 1.2));
+            }
+        }
     }
 
     public String getType() {

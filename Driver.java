@@ -26,6 +26,7 @@ public class Driver{
         if (num > mon.getShoes().getSpeed()) {
             int dmg = hero.getSword().getDamage();
             System.out.println("You dealt " + dmg + " damage");
+            mon.setStatusEffect(hero.getSword().getInflicts());
             if (mon.loseHealth(dmg)) {
                 System.out.println("You defeated the monster\n");
                 System.out.println("You gained " + mon.getMoney_drop() + " coins\n");
@@ -108,7 +109,12 @@ public class Driver{
                 }
             }
             Monster m = new Monster(50, x, y, (int)(Math.random() * 20) + 10, 'R');
-            m.equip(new Weapon(2, 0, 10, 20, "Beat-up sword"));
+            int n = (int)(Math.random() * 4);
+            if(n == 0) {
+                m.equip(new Weapon(2, 0, 10, 20, "Flaming Beat-up sword", "Burn"));
+            }else{
+                m.equip(new Weapon(2, 0, 10, 20, "Beat-up sword", "None"));
+            }
             m.equip(new Armor(4, 0, 1, "Tattered Armor"));
             m.equip(new Shoes(2, 0, (int) (Math.random() * 3), "Leather Shoes"));
             entities.add(m);
@@ -123,8 +129,13 @@ public class Driver{
                     break;
                 }
             }
+            int n = (int)(Math.random() * 4);
             Monster m = new Monster(75, x, y, (int)(Math.random() * 30) + 20, 'S');
-            m.equip(new Weapon(2, 0, 20, 40, "Monster Sword"));
+            if(n == 0) {
+                m.equip(new Weapon(2, 0, 10, 20, "Flaming Monster sword", "Burn"));
+            }else{
+                m.equip(new Weapon(2, 0, 10, 20, "Monster sword", "None"));
+            }
             m.equip(new Armor(4, 0, 0.9, "Leather Armor"));
             m.equip(new Shoes(2, 0, (int) (Math.random() * 5), "Leather Shoes"));
             entities.add(m);
@@ -152,8 +163,8 @@ public class Driver{
         hero.setX(5);
         hero.setY(1);
         List<Object> entities = new ArrayList<Object>();
-        Monster finale_boss = new Monster(2000, 5, 5, 0, 'V');
-        finale_boss.equip(new Weapon(2, 0, 150, 175, "Ultimate Sword"));
+        Monster finale_boss = new Monster(1000, 5, 5, 0, 'V');
+        finale_boss.equip(new Weapon(2, 0, 150, 175, "Ultimate Sword", "Attack Down"));
         finale_boss.equip(new Armor(4, 0, 0.75, "Ruby Armor"));
         finale_boss.equip(new Shoes(2, 0, 20, "Crowned Shoes"));
         entities.add(finale_boss);
@@ -167,7 +178,8 @@ public class Driver{
                         int int_input_f = 0;
                         while (true) {
                             System.out.println(mon);
-                            System.out.println("Your Health: " + hero.getHealth());
+                            System.out.println("Your Health: " + hero.getHealth() +
+                                    "\n" + "Status Effect: " + hero.getStatusEffect());
                             System.out.println("\n1.Fight\n" +
                                     "2.Parry\n" +
                                     "3.Potion\n" +
@@ -197,7 +209,7 @@ public class Driver{
                                         System.out.println("\nYou died");
                                         System.exit(0);
                                     } else {
-                                        System.out.println("\nYou blocked" + hero.getShield().getBlock() + " damage\n");
+                                        System.out.println("\nYou blocked " + hero.getShield().getBlock() + " damage\n");
                                         if (fight(hero, mon)) {
                                             entities.remove(o);
                                             break;
@@ -246,6 +258,7 @@ public class Driver{
                             if (hero.getShoes() != null) {
                                 if (num > hero.getShoes().getSpeed()) {
                                     int dmg = mon.getSword().getDamage();
+                                    hero.setStatusEffect(mon.getSword().getInflicts());
                                     if (hero.getHealth() - dmg <= 0) {
                                         System.out.println("\nThe monster killed you\n");
                                         System.exit(0);
@@ -258,6 +271,7 @@ public class Driver{
                                 }
                             } else {
                                 int dmg = mon.getSword().getDamage();
+                                hero.setStatusEffect(mon.getSword().getInflicts());
                                 if (hero.loseHealth(dmg)) {
                                     System.out.println("\nThe monster killed you\n");
                                     System.exit(0);
@@ -343,7 +357,7 @@ public class Driver{
         Scanner scan = new Scanner(System.in);
         List<Object> entities = new ArrayList<Object>();
         Hero hero = new Hero(0, 100, 10, (int)(mapw/2), (int)(maph/2));
-        hero.equip(new Weapon(2, 0, 20, 30, (RED_BOLD_BRIGHT + "Dagger")));
+        hero.equip(new Weapon(2, 0, 20, 30, (RED_BOLD_BRIGHT + "Dagger"), "None"));
         hero.equip(new Armor(4, 0, 1, (RED_BOLD_BRIGHT + "Starter Armor")));
         entities.add(hero);
         spawn(entities, 10, 5);
@@ -402,7 +416,7 @@ public class Driver{
                     }
                 }
                 Monster m = new Monster(200, x, y, 0, 'V');
-                m.equip(new Weapon(2, 0, 40, 60, "Gold Sword"));
+                m.equip(new Weapon(2, 0, 40, 60, "Gold Sword", "None"));
                 m.equip(new Armor(4, 0, 1, "T-shirt"));
                 m.equip(new Shoes(2, 0, 20, "Sandals"));
                 entities.add(m);
@@ -435,7 +449,7 @@ public class Driver{
                     }
                 }
                 Monster m = new Monster(400, x, y, 0, 'V');
-                m.equip(new Weapon(2, 0, 100, 110, "Platinum Blade"));
+                m.equip(new Weapon(2, 0, 100, 110, "Platinum Blade", "Burn"));
                 m.equip(new Armor(4, 0, 0.8, "Chainmail"));
                 m.equip(new Shoes(2, 0, 20, "Iron boots"));
                 entities.add(m);
@@ -468,7 +482,8 @@ public class Driver{
                             int int_input_f = 0;
                             while(true) {
                                 System.out.println(mon);
-                                System.out.println("Your Health: " + hero.getHealth());
+                                System.out.println("Your Health: " + hero.getHealth() +
+                                        "\n" + "Status Effect: " + hero.getStatusEffect());
                                 System.out.println("\n1.Fight\n" +
                                         "2.Parry\n" +
                                         "3.Potion\n" +
@@ -550,6 +565,7 @@ public class Driver{
                                 if (hero.getShoes() != null) {
                                     if (num > hero.getShoes().getSpeed()) {
                                         int dmg = mon.getSword().getDamage();
+                                        hero.setStatusEffect(mon.getSword().getInflicts());
                                         if (hero.loseHealth(dmg)) {
                                             System.out.println("\nThe monster killed you\n");
                                             System.exit(0);
@@ -561,6 +577,7 @@ public class Driver{
                                     }
                                 }else{
                                     int dmg = mon.getSword().getDamage();
+                                    hero.setStatusEffect(mon.getSword().getInflicts());
                                     if (hero.loseHealth(dmg)) {
                                         System.out.println("\nThe monster killed you\n");
                                         System.exit(0);
