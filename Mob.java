@@ -121,6 +121,10 @@ public abstract class Mob {
         return health;
     }
 
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
     public void setHolding_space(int holding_space) {
         this.holding_space = holding_space;
     }

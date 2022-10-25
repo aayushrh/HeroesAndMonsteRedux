@@ -18,4 +18,10 @@ public class Shoes extends Equipment{
     public String toString(){
         return(super.toString() + "\tSpeed: " + this.speed + ANSI_RESET);
     }
+
+    public String saveText(){
+        return (this.getName() + "  " +
+                this.getSpeed() + "  " +
+                this.getSpace_taken() + "  ");
+    }
 }

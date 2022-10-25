@@ -18,4 +18,10 @@ public class Shield extends Equipment{
     public String toString(){
         return(super.toString() + "\tBlock: " + this.block + ANSI_RESET);
     }
+
+    public String saveText(){
+        return (this.getName() + "  " +
+                this.getBlock() + "  " +
+                this.getSpace_taken() + "  ");
+    }
 }

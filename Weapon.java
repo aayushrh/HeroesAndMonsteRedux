@@ -43,4 +43,12 @@ public class Weapon extends Equipment{
     public String toString(){
         return(super.toString() + "\tMin Damage: " + this.mindamage + "\tMax Damage: " + this.maxdamage + ANSI_RESET);
     }
+
+    public String saveText(){
+        return(this.getName() + "  " +
+                this.getMindamage() + "  " +
+                this.getMaxdamage() + "  " +
+                this.getInflicts() + "  " +
+                this.getSpace_taken() + "  ");
+    }
 }

@@ -1,4 +1,9 @@
 import java.util.*;
+import java.io.File;  // Import the File class
+import java.io.IOException;  // Import the IOException class to handle errors
+import java.io.FileWriter;
+import java.io.FileNotFoundException;
+
 public class Driver{
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String RED_BOLD_BRIGHT = "\033[1;91m";   // RED
@@ -27,6 +32,125 @@ public class Driver{
             }
         }
         return null;
+    }
+
+    public static void createSaveFile(){
+        try {
+            File myObj = new File("save.txt");
+            myObj.createNewFile();
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+    }
+
+    public static void save(Hero hero, List<Object> entities){
+        createSaveFile();
+        try {
+            FileWriter myWriter = new FileWriter("save.txt");
+            myWriter.write(hero.saveText());
+            for(int i = 0; i < entities.size(); i++){
+                Mob m = (Mob)(entities.get(i));
+                switch(m.getType().charAt(0)){
+                    case 'R':
+                    case 'S':
+                    case 'V':
+                        Monster mon = (Monster)(m);
+                        myWriter.write(
+                        m.getType().charAt(0) + "  " +
+                        m.getX() + "  " +
+                        m.getY() + "  " +
+                        m.getHealth() + "  " +
+                        mon.getMoney_drop() + "  " +
+                        m.getSword().saveText() +
+                        m.getArmor().saveText() +
+                        m.getShoes().saveText());
+                        break;
+                    case 'T':
+                        myWriter.write(
+                        "T  " +
+                        m.getX() + "  " +
+                        m.getY() + "  " +
+                        m.getHolding_space() + "  " +
+                        m.getSword().saveText() +
+                        m.getArmor().saveText() +
+                        m.getShield().saveText() +
+                        m.getShoes().saveText());
+                    case 'B':
+                        myWriter.write("B  " +
+                        m.getX() + "  " +
+                        m.getY() + "  ");
+                        break;
+                    case 'P':
+                        Potion p = (Potion)(m);
+                        myWriter.write("P  " +
+                        m.getX() + "  " +
+                        m.getY() + "  " +
+                        p.getHealth_gain() + "  ");
+                        break;
+                }
+            }
+            myWriter.close();
+            System.out.println("Successfully Saved.");
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+    }
+
+    public static void importSave(Hero hero, List<Object> entities){
+        List<String> input = new ArrayList<String>();
+        try {
+            File myObj = new File("save.txt");
+            Scanner myReader = new Scanner(myObj);
+            while (myReader.hasNextLine()) {
+                String data = myReader.nextLine();
+                input.add(data);
+            }
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("\nYou do not have a save file\n");
+            e.printStackTrace();
+        }
+        int place = hero.importSave(input.get(0));
+        String a[] = input.get(0).split("  ");
+        while(true){
+            if(place >= a.length){
+                break;
+            }
+            char type = a[place].charAt(0);
+            switch(type){
+                case 'V':
+                case 'S':
+                case 'R':
+                    Monster m = new Monster(Integer.parseInt(a[place + 3]), Integer.parseInt(a[place + 1]), Integer.parseInt(a[place + 2]),Integer.parseInt(a[place + 4]), type);
+                    m.equip(new Weapon(Integer.parseInt(a[place + 9]), 0, Integer.parseInt(a[place + 6]), Integer.parseInt(a[place + 7]), a[place + 5], a[place + 8]));
+                    m.equip(new Armor(Integer.parseInt(a[place + 12]), 0, Double.parseDouble(a[place + 11]), a[place + 10]));
+                    m.equip(new Shoes(Integer.parseInt(a[place + 15]), 0, Integer.parseInt(a[place + 14]), a[place + 13]));
+                    entities.add(m);
+                    place += 16;
+                    break;
+                case 'T':
+                    TownsPerson v = new TownsPerson(Integer.parseInt(a[place + 3]), Integer.parseInt(a[place + 1]), Integer.parseInt(a[place + 2]));
+                    v.equip(new Weapon(Integer.parseInt(a[place + 8]), 0, Integer.parseInt(a[place + 5]), Integer.parseInt(a[place + 6]), a[place + 4], a[place + 7]));
+                    v.equip(new Armor(Integer.parseInt(a[place + 11]), 0, Double.parseDouble(a[place + 10]), a[place + 9]));
+                    v.equip(new Shield(Integer.parseInt(a[place + 14]), 0, Integer.parseInt(a[place + 13]), a[place + 12]));
+                    v.equip(new Shoes(Integer.parseInt(a[place + 17]), 0, Integer.parseInt(a[place + 16]), a[place + 15]));
+                    entities.add(v);
+                    place += 18;
+                    break;
+                case 'P':
+                    Potion p = new Potion(Integer.parseInt(a[place + 3]), Integer.parseInt(a[place + 1]), Integer.parseInt(a[place + 2]));
+                    entities.add(p);
+                    place += 4;
+                    break;
+                case 'B':
+                    Blacksmith b = new Blacksmith(Integer.parseInt(a[place + 1]), Integer.parseInt(a[place + 2]));
+                    entities.add(b);
+                    place += 3;
+                    break;
+            }
+        }
     }
 
     public static boolean fight(Hero hero, Monster mon){
@@ -181,39 +305,58 @@ public class Driver{
         hero.equip(new Weapon(2, 0, 20, 30, (RED_BOLD_BRIGHT + "Dagger"), "None"));
         hero.equip(new Armor(4, 0, 1, (RED_BOLD_BRIGHT + "Starter Armor")));
         entities.add(hero);
-        spawn(entities, 20, 10);
-        for (int j = 0; j < 5; j++){
-            int x = 0;
-            int y = 0;
-            while(true) {
-                x = (int) (Math.random() * mapw);
-                y = (int) (Math.random() * maph);
-                if(check(x, y, entities) == null){
-                    break;
-                }
+        boolean spawn = true;
+        System.out.println("**Heroes and Monsters");
+        int intinput_s = 0;
+        while (true) {
+            System.out.println("1. Play\n" +
+                    "2. Go to last save state\n");
+            String input_s = scan.nextLine();
+            if(input_s.equals("2") || input_s.equals("1")){
+                intinput_s = Integer.parseInt(input_s);
+                break;
             }
-            TownsPerson v = new TownsPerson(20, x, y);
-            v.restock(1);
-            entities.add(v);
         }
-        for (int k = 0; k < 2; k++){
-            int x = 0;
-            int y = 0;
-            while(true) {
-                x = (int) (Math.random() * mapw);
-                y = (int) (Math.random() * maph);
-                if(check(x, y, entities) == null){
-                    break;
+        if(intinput_s == 2){
+            spawn = false;
+            importSave(hero, entities);
+        }
+        if(spawn) {
+            spawn(entities, 20, 10);
+            for (int j = 0; j < 5; j++) {
+                int x = 0;
+                int y = 0;
+                while (true) {
+                    x = (int) (Math.random() * mapw);
+                    y = (int) (Math.random() * maph);
+                    if (check(x, y, entities) == null) {
+                        break;
+                    }
                 }
+                TownsPerson v = new TownsPerson(20, x, y);
+                v.restock(1);
+                entities.add(v);
             }
-            Blacksmith b = new Blacksmith(x, y);
-            entities.add(b);
+            for (int k = 0; k < 2; k++) {
+                int x = 0;
+                int y = 0;
+                while (true) {
+                    x = (int) (Math.random() * mapw);
+                    y = (int) (Math.random() * maph);
+                    if (check(x, y, entities) == null) {
+                        break;
+                    }
+                }
+                Blacksmith b = new Blacksmith(x, y);
+                entities.add(b);
+            }
         }
         boolean finale_boss = true;
         boolean intro = false;
+
         while(true) {
             int intinput_one = 0;
-            if(hero.getMonstersdefeated() < 7 && !intro){
+            if(hero.getMonstersdefeated() == 7 && !intro){
                 System.out.println("You wake up one day in your beautiful village of Honeywood\n" +
                         "Its just that, well, it wasn't beautiful anymore\n" +
                         "Fire Everywhere\n" +
@@ -227,10 +370,10 @@ public class Driver{
                         "and you FIGHT, to avenge, for Vengance's sake\n");
                 intro = true;
             }
-            else if(hero.getMonstersdefeated() > 7 && hero.getHolding_space() < 15){
+            else if(hero.getMonstersdefeated() > 7 && hero.getHolding_space() == 10){
                 System.out.println("\nYou bag got upgraded to 15 holding space\n");
                 hero.setHolding_space(15);
-            }else if (hero.getMonstersdefeated() >= 15 && hero.getHolding_space() < 20){
+            }else if (hero.getMonstersdefeated() >= 15 && hero.getHolding_space() == 15){
                 hero.setHolding_space(20);
                 System.out.println("\nYou bag got upgraded to 20 holding space\n");
                 System.out.println("You've done it\n" +
@@ -254,7 +397,7 @@ public class Driver{
                 m.equip(new Armor(4, 0, 1, "T-shirt"));
                 m.equip(new Shoes(2, 0, 20, "Sandals"));
                 entities.add(m);
-            }else if (hero.getMonstersdefeated() >= 16 && hero.getHolding_space() < 25){
+            }else if (hero.getMonstersdefeated() >= 16 && hero.getHolding_space() == 20){
                 hero.setHolding_space(25);
                 System.out.println("\nYou bag got upgraded to 25 holding space\n");
                 System.out.println("'Argh', cried the Monster\n" +
@@ -267,7 +410,7 @@ public class Driver{
                 hero.setMoney(hero.getMoney() + 100);
                 entities = restockVillagers(entities, 2);
                 spawn(entities, 10, 9);
-            }else if (hero.getMonstersdefeated() >= 31 && hero.getHolding_space() < 30){
+            }else if (hero.getMonstersdefeated() >= 31 && hero.getHolding_space() == 25){
                 hero.setHolding_space(30);
                 System.out.println("\nYou bag got upgraded to 30 holding space\n");
                 System.out.println("You find the King of the Goblin\n" +
@@ -287,7 +430,7 @@ public class Driver{
                 m.equip(new Armor(4, 0, 0.8, "Chainmail"));
                 m.equip(new Shoes(2, 0, 20, "Iron boots"));
                 entities.add(m);
-            }else if (hero.getMonstersdefeated() >= 32 && hero.getHolding_space() < 35){
+            }else if (hero.getMonstersdefeated() >= 32 && hero.getHolding_space() == 30){
                 hero.setHolding_space(35);
                 System.out.println("\nYou bag got upgraded to 30 holding space\n");
                 System.out.println("It's Dead\n" +
@@ -619,7 +762,8 @@ public class Driver{
                 System.out.println("WASD to move\n" +
                         "1 for potion\n" +
                         "2 to view stats\n" +
-                        "3. to drop something\n");
+                        "3. to drop something\n" +
+                        "4. Save\n");
                 String input_one = scan.nextLine();
                 if (input_one.toLowerCase().equals("w")) {
                     intinput_one = 1;
@@ -635,6 +779,8 @@ public class Driver{
                     intinput_one = 6;
                 } else if (input_one.equals("3")){
                     intinput_one = 7;
+                } else if (input_one.equals("4")){
+                    intinput_one = 8;
                 }
 
                 if(intinput_one != 0){
@@ -710,6 +856,8 @@ public class Driver{
                 }else{
                     System.out.println("\nYou do not have that peice of equipment\n");
                 }
+            } else if (intinput_one == 8){
+                save(hero, entities);
             }
         }
     }
