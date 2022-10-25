@@ -9,6 +9,14 @@ public class Driver{
     public static int mapw = 30;
     public static int maph = 30;
     public static double looking_distance = 2.5;
+    public static String key[] = { "Key", (RED_BOLD_BRIGHT + "R" + ANSI_RESET + " is Regular Monster"),
+            (RED_BOLD_BRIGHT + "S" + ANSI_RESET + " is Super Monster"),
+            (RED_BOLD_BRIGHT + "V" + ANSI_RESET + " is Boss"),
+            (PURPLE_BOLD_BRIGHT + "P" + ANSI_RESET + " is Potion"),
+            (BLUE_BOLD_BRIGHT + "T" + ANSI_RESET + " is Shopkeeper"),
+            (BLUE_BOLD_BRIGHT + "B" + ANSI_RESET + " is Blacksmith"),
+            (BLUE_BOLD_BRIGHT + "H" + ANSI_RESET + " is you"),
+            "", "", "" };
     public static Object check(int x, int y, List<Object> entities){
         for(Object i : entities){
             Mob m = (Mob)(i);
@@ -92,7 +100,7 @@ public class Driver{
                     }
                 }
             }
-            System.out.println();
+            System.out.println("\t" + key[i - miny]);
         }
 
     }
@@ -305,6 +313,8 @@ public class Driver{
                     if(m.getType().substring(1).equals("Monster")){
                         Monster mon = (Monster)(m);
                         while(true){
+                            hero.update();
+                            mon.update();
                             int int_input_f = 0;
                             while(true) {
                                 System.out.println(mon);
@@ -413,6 +423,7 @@ public class Driver{
                                 }
                             }
                         }
+                        hero.setStatusEffect("None");
                     }else if(m.getType().equals("Potion")){
                         hero.addPotion((Potion)(m));
                         System.out.println("\nYou found " + (Potion)(m) + "\n");

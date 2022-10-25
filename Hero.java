@@ -49,7 +49,6 @@ public class Hero extends Mob{
 
     public String toString(){
         String s = ("\nHealth: " + super.getHealth() + "\n" +
-               "Status Effect: " + super.getStatusEffect() + "\n" +
                "Money: " + this.money + "\n" +
                "Weapon: " + this.getSword() + "\n" +
                "Armor: " + this.getArmor() + "\n" +
