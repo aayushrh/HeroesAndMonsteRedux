@@ -212,7 +212,7 @@ public class Driver{
                         "Trees burning\n" +
                         "Women screaming\n" +
                         "Children dying\n" +
-                        "What heartless, no soulless, creature could do such a thing, after we have done nothing to them\n" +
+                        "What heartless, no, soulless, creature could do such a thing, after we have done nothing to them\n" +
                         "You will not have it\n" +
                         "You pick up a sword forged in the dying breaths of Bodge\n" +
                         "The prized Chainmail Armor of the Mayor\n" +
