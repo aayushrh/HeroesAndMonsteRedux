@@ -4,16 +4,16 @@ public class TownsPerson extends Mob{
     public static final String YELLOW_BOLD_BRIGHT = "\033[1;93m";// YELLOW
     public static final String ANSI_RESET = "\u001B[0m";
     private Weapon weaponlist[] = {
-            new Weapon(1, 10, 10, 20, (RED_BOLD_BRIGHT + "Flaming Short Dagger"), "Burn"),
+            new Weapon(1, 10, 10, 20, ("Flaming " + RED_BOLD_BRIGHT +  "Short Dagger"), "Burn"),
             new Weapon(2, 20, 20, 30, (YELLOW_BOLD_BRIGHT + "Longsword"), "None"),
-            new Weapon(4, 30, 30, 40, (YELLOW_BOLD_BRIGHT + "Stronger Longsword"), "Armor Down"),
+            new Weapon(4, 30, 30, 40, ("Stronger " + YELLOW_BOLD_BRIGHT +  "Longersword"), "Armor Down"),
             new Weapon(4, 40, 40, 50, (GREEN_BOLD_BRIGHT + "Greatsword"), "None"),
     };
     private Weapon weaponlist2[] = {
             new Weapon(1, 70, 50, 60, (RED_BOLD_BRIGHT + "Bronze Short Dagger"), "None"),
-            new Weapon(2, 80, 70, 80, (YELLOW_BOLD_BRIGHT + "Flaming Iron Longsword"), "Burn"),
+            new Weapon(2, 80, 70, 80, ("Flaming " + YELLOW_BOLD_BRIGHT +  "Iron Longsword"), "Burn"),
             new Weapon(4, 90, 90, 100, (YELLOW_BOLD_BRIGHT + "Weakening Ruby Longersword"), "Attack Down"),
-            new Weapon(4, 100, 110, 120, (GREEN_BOLD_BRIGHT + "Stronger Platinum Greatsword"), "Armor Down"),
+            new Weapon(4, 100, 110, 120, ("Stronger " + GREEN_BOLD_BRIGHT +  "Platinum Greatsword"), "Armor Down"),
     };
     private Armor armorlist[] = {
             new Armor(4, 40, 7.0/8.0, (RED_BOLD_BRIGHT + "Copper Armor")),
