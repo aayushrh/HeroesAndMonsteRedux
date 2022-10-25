@@ -8,10 +8,9 @@ public abstract class Mob {
     private String type;
     private String statusEffect;
     private int statusCounter;
+    private boolean interacted;
     //temp vars
     private double prevArmor;
-
-    private boolean interacted;
 
     public Mob(int holding_space, int health, int x, int y, String type) {
         this.holding_space = holding_space;
@@ -43,6 +42,7 @@ public abstract class Mob {
         this.statusCounter++;
         if(this.statusEffect.equals("Burn")){
             this.loseHealth(5);
+            System.out.println("\nYou took 5 damage from Burn\n");
             if(this.statusCounter > 5){
                 this.statusEffect = "None";
             }
@@ -50,18 +50,22 @@ public abstract class Mob {
             if(this.statusCounter == 1) {
                 prevArmor = this.getArmor().getDamage_reduction();
                 this.getArmor().setDamage_reduction(1);
+                System.out.println("\nYour Armor has been weakened\n");
             }else if (this.statusCounter >= 3){
                 this.statusEffect = "None";
                 this.getArmor().setDamage_reduction(prevArmor);
+                System.out.println("\nJK is back\n");
             }
         }else if (this.statusEffect.equals("Attack Down")){
             if(this.statusCounter == 1) {
                 this.getSword().setMaxdamage((int)(this.getSword().getMaxdamage() / 1.2));
                 this.getSword().setMaxdamage((int)(this.getSword().getMindamage() / 1.2));
+                System.out.println("\nYour Weapon has been weakened\n");
             }else if (this.statusCounter >= 3){
                 this.statusEffect = "None";
                 this.getSword().setMaxdamage((int)(this.getSword().getMaxdamage() * 1.2));
                 this.getSword().setMaxdamage((int)(this.getSword().getMindamage() * 1.2));
+                System.out.println("\nJK its back\n");
             }
         }
     }
