@@ -181,7 +181,7 @@ public class Driver{
         hero.equip(new Weapon(2, 0, 20, 30, (RED_BOLD_BRIGHT + "Dagger"), "None"));
         hero.equip(new Armor(4, 0, 1, (RED_BOLD_BRIGHT + "Starter Armor")));
         entities.add(hero);
-        spawn(entities, 10, 5);
+        spawn(entities, 20, 10);
         for (int j = 0; j < 5; j++){
             int x = 0;
             int y = 0;
@@ -266,7 +266,7 @@ public class Driver{
                 System.out.println("All the TownsPeople have been restocked \n");
                 hero.setMoney(hero.getMoney() + 100);
                 entities = restockVillagers(entities, 2);
-                spawn(entities, 8, 7);
+                spawn(entities, 10, 9);
             }else if (hero.getMonstersdefeated() >= 31 && hero.getHolding_space() < 30){
                 hero.setHolding_space(30);
                 System.out.println("\nYou bag got upgraded to 30 holding space\n");
