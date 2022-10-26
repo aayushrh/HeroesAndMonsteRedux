@@ -113,7 +113,7 @@ public abstract class Mob {
     }
 
     public boolean loseHealth(int health){
-        if(this.getArmor() == null || this.getArmor().getDamage_reduction() == 1) {
+        if(this.getArmor() == null || this.getArmor().getDamage_reduction() == 1.0) {
             this.health -= health;
         }else{
             this.health -= health * this.getArmor().getDamage_reduction();

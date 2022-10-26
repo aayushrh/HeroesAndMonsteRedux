@@ -395,7 +395,7 @@ public class Driver{
 
         while(true) {
             int intinput_one = 0;
-            if(hero.getMonstersdefeated() == 7 && !intro){
+            if(hero.getMonstersdefeated() == 0 && !intro){
                 System.out.println("You wake up one day in your beautiful village of Honeywood\n" +
                         "Its just that, well, it wasn't beautiful anymore\n" +
                         "Fire Everywhere\n" +
@@ -437,7 +437,7 @@ public class Driver{
                         "; y: " + (16 -(y - numy)) + " - " + (16 - (y + (10 - numy))) + "\n");
                 Monster m = new Monster(200, x, y, 0, 'V');
                 m.equip(new Weapon(2, 0, 40, 60, "Gold Sword", "None"));
-                m.equip(new Armor(4, 0, 1, "T-shirt", "None"));
+                m.equip(new Armor(4, 0, 1.0, "T-shirt", "None"));
                 m.equip(new Shoes(2, 0, 20, "Sandals"));
                 entities.add(m);
             }else if (hero.getMonstersdefeated() >= 16 && hero.getHolding_space() == 20){
@@ -806,10 +806,10 @@ public class Driver{
                 }
                 printMap(hero, entities);
                 System.out.println("WASD to move\n" +
-                        "P for potion\n" +
-                        "V to view stats\n" +
+                        "Q for potion\n" +
+                        "E to view stats\n" +
                         "R. to drop something\n" +
-                        "E. Save\n");
+                        "F. Save\n");
                 String input_one = scan.nextLine();
                 if (input_one.toLowerCase().equals("w")) {
                     intinput_one = 1;
@@ -819,13 +819,13 @@ public class Driver{
                     intinput_one = 3;
                 } else if (input_one.toLowerCase().equals("d")) {
                     intinput_one = 4;
-                } else if (input_one.toLowerCase().equals("p")) {
+                } else if (input_one.toLowerCase().equals("q")) {
                     intinput_one = 5;
-                } else if (input_one.toLowerCase().equals("v")) {
+                } else if (input_one.toLowerCase().equals("e")) {
                     intinput_one = 6;
                 } else if (input_one.toLowerCase().equals("r")){
                     intinput_one = 7;
-                } else if (input_one.toLowerCase().equals("e")){
+                } else if (input_one.toLowerCase().equals("f")){
                     intinput_one = 8;
                 }
 
