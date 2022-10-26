@@ -22,12 +22,11 @@ public class Driver{
             (BLUE_BOLD_BRIGHT + "B" + ANSI_RESET + " is Blacksmith"),
             (BLUE_BOLD_BRIGHT + "H" + ANSI_RESET + " is you"),
             "", "", "" };
-    public static Object check(int x, int y, List<Object> entities){
-        for(Object i : entities){
-            Mob m = (Mob)(i);
+    public static Mob check(int x, int y, List<Mob> entities){
+        for(Mob m : entities){
             if (m.getX() == x && m.getY() == y){
                 if(!m.getType().equals("Hero")) {
-                    return i;
+                    return m;
                 }
             }
         }
@@ -44,7 +43,7 @@ public class Driver{
         }
     }
 
-    public static void save(Hero hero, List<Object> entities, int save_file_num){
+    public static void save(Hero hero, List<Mob> entities, int save_file_num){
         createSaveFile(save_file_num);
         try {
             File file = new File("save" + save_file_num + ".txt");
@@ -52,7 +51,7 @@ public class Driver{
             FileWriter myWriter = new FileWriter("save" + save_file_num + ".txt");
             myWriter.write(hero.saveText());
             for(int i = 0; i < entities.size(); i++){
-                Mob m = (Mob)(entities.get(i));
+                Mob m = entities.get(i);
                 switch(m.getType().charAt(0)){
                     case 'R':
                     case 'S':
@@ -100,7 +99,7 @@ public class Driver{
         }
     }
 
-    public static void importSave(Hero hero, List<Object> entities, int num){
+    public static void importSave(Hero hero, List<Mob> entities, int num){
         List<String> input = new ArrayList<String>();
         try {
             File myObj = new File("save" + num + ".txt");
@@ -183,7 +182,7 @@ public class Driver{
         return false;
     }
 
-    public static void printMap(Hero hero, List<Object> entities){
+    public static void printMap(Hero hero, List<Mob> entities){
         int minx = 0, maxx = 0, miny = 0, maxy = 0;
 
         if(hero.getX() < 5){
@@ -207,12 +206,10 @@ public class Driver{
             miny = hero.getY() - 5;
             maxy = hero.getY() + 5;
         }
-
         for(int i = miny; i < maxy; i++){
             for(int j = minx; j < maxx; j++){
                 boolean printed = false;
-                for(Object o : entities){
-                    Mob m = ((Mob)(o));
+                for(Mob m : entities){
                     if(m.getX() == j && m.getY() == i){
                         if(m.isInteracted() || Math.sqrt(Math.pow(hero.getX() - m.getX(),2) + Math.pow(hero.getY() - m.getY(), 2)) <= looking_distance) {
                             if(m.getType().charAt(1) == 'M') {
@@ -240,7 +237,7 @@ public class Driver{
 
     }
 
-    public static void spawn(List<Object> entities, int regs, int supers){
+    public static void spawn(List<Mob> entities, int regs, int supers){
         for (int i = 0; i < regs; i++){
             int x = 0;
             int y = 0;
@@ -298,9 +295,8 @@ public class Driver{
         }
     }
 
-    public static List<Object> restockVillagers(List<Object> entities, int num){
-        for(Object i : entities){
-            Mob m = (Mob)(i);
+    public static List<Mob> restockVillagers(List<Mob> entities, int num){
+        for(Mob m : entities){
             if(m.getType().charAt(0) == 'T'){
                 TownsPerson t = (TownsPerson)(m);
                 t.restock(num);
@@ -328,12 +324,22 @@ public class Driver{
         }
     }
 
+    public static boolean onlyContainsMove(String input){
+        for(int i = 0; i < input.length(); i++){
+            char a = input.toLowerCase().charAt(i);
+            if(!(a == 'w' || a == 's' || a == 'a' || a == 'd')){
+                return false;
+            }
+        }
+        return true;
+    }
+
     public static void main(String[] args){
         Scanner scan = new Scanner(System.in);
-        List<Object> entities = new ArrayList<Object>();
+        List<Mob> entities = new ArrayList<Mob>();
         Hero hero = new Hero(0, 100, 10, (int)(mapw/2), (int)(maph/2));
         hero.equip(new Weapon(2, 0, 20, 30, (RED_BOLD_BRIGHT + "Dagger"), "None"));
-        hero.equip(new Armor(4, 0, 1, ("Spiky " + RED_BOLD_BRIGHT + "Starter Armor"), "Thorns"));
+        hero.equip(new Armor(4, 0, 1, ( RED_BOLD_BRIGHT + "Starter Armor"), "None"));
         entities.add(hero);
         boolean spawn = true;
         System.out.println("**Heroes and Monsters**");
@@ -497,8 +503,7 @@ public class Driver{
                 spawn(entities, 0, 0);
             }
             while(true) {
-                Object o = check(hero.getX(), hero.getY(), entities);
-                Mob m = (Mob)(o);
+                Mob m = check(hero.getX(), hero.getY(), entities);
                 if(m != null){
                     if(m.getType().substring(1).equals("Monster")){
                         Monster mon = (Monster)(m);
@@ -527,7 +532,7 @@ public class Driver{
                             boolean hit = true;
                             if (int_input_f == 1){
                                 if(fight(hero, mon)){
-                                    entities.remove(o);
+                                    entities.remove(m);
                                     break;
                                 }
                             }else if (int_input_f == 2){
@@ -541,7 +546,7 @@ public class Driver{
                                         } else {
                                             System.out.println("\nYou blocked" + hero.getShield().getBlock() + " damage\n");
                                             if(fight(hero, mon)){
-                                                entities.remove(o);
+                                                entities.remove(m);
                                                 break;
                                             }
                                         }
@@ -554,7 +559,7 @@ public class Driver{
                                             System.exit(0);
                                         }
                                         if(fight(hero, mon)){
-                                            entities.remove(o);
+                                            entities.remove(m);
                                             break;
                                         }
                                     }
@@ -606,7 +611,7 @@ public class Driver{
                     }else if(m.getType().equals("Potion")){
                         hero.addPotion((Potion)(m));
                         System.out.println("\nYou found " + (Potion)(m) + "\n");
-                        entities.remove(o);
+                        entities.remove(m);
                     }else if (m.getType().equals("TownsPerson")){
                         TownsPerson t = (TownsPerson)(m);
                         m.setInteracted(true);
@@ -634,9 +639,9 @@ public class Driver{
                                         }else{
                                             System.out.println("\nyou did not have enough space and dropped it on the ground\n");
                                             if(check(hero.getX() + 1, hero.getY() + 1, entities) == null) {
-                                                entities.add((Object) (new Drops(hero.getX() + 1, hero.getY() + 1, (Equipment) (t.getSword()))));
+                                                entities.add((Mob) (new Drops(hero.getX() + 1, hero.getY() + 1, (Equipment) (t.getSword()))));
                                             }else if(check(hero.getX() - 1, hero.getY() - 1, entities) == null) {
-                                                entities.add((Object) (new Drops(hero.getX() + 1, hero.getY() + 1, (Equipment) (t.getSword()))));
+                                                entities.add((Mob) (new Drops(hero.getX() + 1, hero.getY() + 1, (Equipment) (t.getSword()))));
                                             }
                                         }
                                     }else{
@@ -656,9 +661,9 @@ public class Driver{
                                         }else{
                                             System.out.println("\nyou did not have enough space and dropped it on the ground\n");
                                             if(check(hero.getX() + 1, hero.getY() + 1, entities) == null) {
-                                                entities.add((Object) (new Drops(hero.getX() + 1, hero.getY() + 1, (Equipment) (t.getArmor()))));
+                                                entities.add((Mob) (new Drops(hero.getX() + 1, hero.getY() + 1, (Equipment) (t.getArmor()))));
                                             }else if(check(hero.getX() - 1, hero.getY() - 1, entities) == null) {
-                                                entities.add((Object) (new Drops(hero.getX() + 1, hero.getY() + 1, (Equipment) (t.getArmor()))));
+                                                entities.add((Mob) (new Drops(hero.getX() + 1, hero.getY() + 1, (Equipment) (t.getArmor()))));
                                             }
                                         }
                                     }else{
@@ -678,9 +683,9 @@ public class Driver{
                                         }else{
                                             System.out.println("\nyou did not have enough space and dropped it on the ground\n");
                                             if(check(hero.getX() + 1, hero.getY() + 1, entities) == null) {
-                                                entities.add((Object) (new Drops(hero.getX() + 1, hero.getY() + 1, (Equipment) (t.getShield()))));
+                                                entities.add((Mob) (new Drops(hero.getX() + 1, hero.getY() + 1, (Equipment) (t.getShield()))));
                                             }else if(check(hero.getX() - 1, hero.getY() - 1, entities) == null) {
-                                                entities.add((Object) (new Drops(hero.getX() + 1, hero.getY() + 1, (Equipment) (t.getShield()))));
+                                                entities.add((Mob) (new Drops(hero.getX() + 1, hero.getY() + 1, (Equipment) (t.getShield()))));
                                             }
                                         }
                                     }else{
@@ -700,9 +705,9 @@ public class Driver{
                                         }else{
                                             System.out.println("\nyou did not have enough space and dropped it on the ground\n");
                                             if(check(hero.getX() + 1, hero.getY() + 1, entities) == null) {
-                                                entities.add((Object) (new Drops(hero.getX() + 1, hero.getY() + 1, (Equipment) (t.getShoes()))));
+                                                entities.add((Mob) (new Drops(hero.getX() + 1, hero.getY() + 1, (Equipment) (t.getShoes()))));
                                             }else if(check(hero.getX() - 1, hero.getY() - 1, entities) == null) {
-                                                entities.add((Object) (new Drops(hero.getX() + 1, hero.getY() + 1, (Equipment) (t.getShoes()))));
+                                                entities.add((Mob) (new Drops(hero.getX() + 1, hero.getY() + 1, (Equipment) (t.getShoes()))));
                                             }
                                         }
                                     }else{
@@ -743,28 +748,28 @@ public class Driver{
                             if (type.equals("Weapon")){
                                 if(hero.equip((Weapon)(d.getEquipment_dropped()))){
                                     System.out.println("\nYou equipped the sword\n");
-                                    entities.remove(o);
+                                    entities.remove(m);
                                 }else{
                                     System.out.println("\nYou failed\n");
                                 }
                             } else if (type.equals("Shield")){
                                 if(hero.equip((Shield)(d.getEquipment_dropped()))){
                                     System.out.println("\nYou equipped the shield\n");
-                                    entities.remove(o);
+                                    entities.remove(m);
                                 }else{
                                     System.out.println("\nYou failed\n");
                                 }
                             } else if (type.equals("Shoes")){
                                 if(hero.equip((Shoes)(d.getEquipment_dropped()))){
                                     System.out.println("\nYou equipped the shoes\n");
-                                    entities.remove(o);
+                                    entities.remove(m);
                                 }else{
                                     System.out.println("\nYou failed\n");
                                 }
                             } else if (type.equals("Armor")){
                                 if(hero.equip((Armor)(d.getEquipment_dropped()))){
                                     System.out.println("\nYou equipped the armor\n");
-                                    entities.remove(o);
+                                    entities.remove(m);
                                 }else{
                                     System.out.println("\nYou failed\n");
                                 }
@@ -828,7 +833,50 @@ public class Driver{
                 } else if (input_one.toLowerCase().equals("f")){
                     intinput_one = 8;
                 }
-
+                else if (onlyContainsMove(input_one)){
+                    intinput_one = 99999;
+                    boolean outtabounds = false;
+                    for(int i = 0; i < input_one.length(); i++){
+                        char a = input_one.toLowerCase().charAt(i);
+                        switch(a){
+                            case 'w':
+                                if(hero.getY() > 0) {
+                                    hero.move(0, -1);
+                                }else{
+                                    System.out.println("\nYou are going outta bounds\n");
+                                    outtabounds = true;
+                                }
+                                break;
+                            case 's':
+                                if(hero.getY() < maph - 2) {
+                                    hero.move(0, 1);
+                                }else{
+                                    System.out.println("\nYou are going outta bounds\n");
+                                    outtabounds = true;
+                                }
+                                break;
+                            case 'a':
+                                if(hero.getX() > 0) {
+                                    hero.move(-1, 0);
+                                }else{
+                                    System.out.println("\nYou are going outta bounds\n");
+                                    outtabounds = true;
+                                }
+                                break;
+                            case 'd':
+                                if(hero.getX() < mapw - 2) {
+                                    hero.move(1, 0);
+                                }else{
+                                    System.out.println("\nYou are going outta bounds\n");
+                                    outtabounds = true;
+                                }
+                                break;
+                        }
+                        if(outtabounds){
+                            break;
+                        }
+                    }
+                }
                 if(intinput_one != 0){
                     break;
                 }
@@ -848,12 +896,11 @@ public class Driver{
                         mapw = 10;
                         hero.setX(5);
                         hero.setY(1);
-                        entities = new ArrayList<Object>();
                         Monster finale_boss_mon = new Monster(1000, 5, 5, 0, 'V');
                         finale_boss_mon.equip(new Weapon(2, 0, 150, 175, "Ultimate Sword", "Attack Down"));
                         finale_boss_mon.equip(new Armor(4, 0, 0.75, "Ruby Armor", "None"));
                         finale_boss_mon.equip(new Shoes(2, 0, 20, "Crowned Shoes"));
-                        entities.add(finale_boss);
+                        entities.add(finale_boss_mon);
                     }
                 }
             }else if (intinput_one == 2){
@@ -894,10 +941,10 @@ public class Driver{
                     }
                 }
                 if (int_input_f == 1 && hero.getShield() != null){
-                    entities.add((Object)(new Drops(hero.getX(), hero.getY(), (Equipment)(hero.getShield()))));
+                    entities.add((new Drops(hero.getX(), hero.getY(), (Equipment)(hero.getShield()))));
                     hero.shieldGone();
                 } else if (int_input_f == 2 && hero.getShoes() != null){
-                    entities.add((Object)(new Drops(hero.getX(), hero.getY(), (Equipment)(hero.getShoes()))));
+                    entities.add((new Drops(hero.getX(), hero.getY(), (Equipment)(hero.getShoes()))));
                     hero.shoesGone();
                 }else{
                     System.out.println("\nYou do not have that peice of equipment\n");
