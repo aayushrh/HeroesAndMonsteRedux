@@ -16,10 +16,10 @@ public class TownsPerson extends Mob{
             new Weapon(4, 100, 110, 120, ("Stronger " + GREEN_BOLD_BRIGHT +  "Platinum Greatsword"), "Armor Down"),
     };
     private Armor armorlist[] = {
-            new Armor(4, 40, 7.0/8.0, (RED_BOLD_BRIGHT + "Copper Armor")),
-            new Armor(5, 50, 6.0/8.0, (YELLOW_BOLD_BRIGHT + "Iron Armor")),
-            new Armor(7, 60, 1.0/2.0, (YELLOW_BOLD_BRIGHT + "Diamond Armor")),
-            new Armor(7, 70, 3.0/8.0, (GREEN_BOLD_BRIGHT + "Platinum Armor")),
+            new Armor(4, 40, 7.0/8.0, (RED_BOLD_BRIGHT + "Copper Armor"), "None"),
+            new Armor(5, 50, 6.0/8.0, (YELLOW_BOLD_BRIGHT + "Iron Armor"), "None"),
+            new Armor(7, 60, 1.0/2.0, (YELLOW_BOLD_BRIGHT + "Diamond Armor"), "None"),
+            new Armor(7, 70, 3.0/8.0, (GREEN_BOLD_BRIGHT + "Platinum Armor"), "None"),
     };
     private Shoes shoelist[] = {
             new Shoes(2, 10, 2, (RED_BOLD_BRIGHT + "Sandals")),

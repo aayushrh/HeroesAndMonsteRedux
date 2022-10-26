@@ -109,22 +109,22 @@ public class Hero extends Mob{
     public int importSave(String save){
         int place = 0;
         String a[] = save.split("  ");
-        super.setHolding_space(Integer.parseInt(a[16]));
+        super.setHolding_space(Integer.parseInt(a[17]));
         this.money = Integer.parseInt(a[1]);
-        super.setX(Integer.parseInt(a[18]));
-        super.setY(Integer.parseInt(a[19]));
+        super.setX(Integer.parseInt(a[19]));
+        super.setY(Integer.parseInt(a[20]));
         super.setHealth(Integer.parseInt(a[0]));
         super.equip(new Weapon(Integer.parseInt(a[6]), 0, Integer.parseInt(a[3]), Integer.parseInt(a[4]), a[2], a[5]));
-        super.equip(new Armor(Integer.parseInt(a[9]), 0, Double.parseDouble(a[8]), a[7]));
-        if(!a[10].equals("NONE")){
-            super.equip(new Shield(Integer.parseInt(a[12]), 0, Integer.parseInt(a[11]), a[10]));
+        super.equip(new Armor(Integer.parseInt(a[9]), 0, Double.parseDouble(a[8]), a[7], a[10]));
+        if(!a[11].equals("NONE")){
+            super.equip(new Shield(Integer.parseInt(a[13]), 0, Integer.parseInt(a[12]), a[11]));
         }
-        if(!a[13].equals("NONE")){
-            super.equip(new Shield(Integer.parseInt(a[15]), 0, Integer.parseInt(a[14]), a[13]));
+        if(!a[14].equals("NONE")){
+            super.equip(new Shoes(Integer.parseInt(a[16]), 0, Integer.parseInt(a[15]), a[14]));
         }
-        this.monstersdefeated = Integer.parseInt(a[17]);
-        place = 20;
-        for (int i = 20; i < a.length; i += 3) {
+        this.monstersdefeated = Integer.parseInt(a[18]);
+        place = 21;
+        for (int i = 21; i < a.length; i += 3) {
             if(a[i].charAt(0) - 48 < 9) {
                 Potion p = new Potion(Integer.parseInt(a[i]), Integer.parseInt(a[i + 1]), Integer.parseInt(a[i + 2]));
                 potionList.add(p);

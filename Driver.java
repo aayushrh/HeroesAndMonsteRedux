@@ -93,7 +93,7 @@ public class Driver{
                 }
             }
             myWriter.close();
-            System.out.println("Successfully Saved.");
+            System.out.println("Successfully Saved.\n");
         } catch (IOException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
@@ -127,19 +127,19 @@ public class Driver{
                 case 'R':
                     Monster m = new Monster(Integer.parseInt(a[place + 3]), Integer.parseInt(a[place + 1]), Integer.parseInt(a[place + 2]),Integer.parseInt(a[place + 4]), type);
                     m.equip(new Weapon(Integer.parseInt(a[place + 9]), 0, Integer.parseInt(a[place + 6]), Integer.parseInt(a[place + 7]), a[place + 5], a[place + 8]));
-                    m.equip(new Armor(Integer.parseInt(a[place + 12]), 0, Double.parseDouble(a[place + 11]), a[place + 10]));
-                    m.equip(new Shoes(Integer.parseInt(a[place + 15]), 0, Integer.parseInt(a[place + 14]), a[place + 13]));
+                    m.equip(new Armor(Integer.parseInt(a[place + 12]), 0, Double.parseDouble(a[place + 11]), a[place + 10], a[place + 13]));
+                    m.equip(new Shoes(Integer.parseInt(a[place + 16]), 0, Integer.parseInt(a[place + 15]), a[place + 14]));
                     entities.add(m);
-                    place += 16;
+                    place += 17;
                     break;
                 case 'T':
                     TownsPerson v = new TownsPerson(Integer.parseInt(a[place + 3]), Integer.parseInt(a[place + 1]), Integer.parseInt(a[place + 2]));
                     v.equip(new Weapon(Integer.parseInt(a[place + 8]), 0, Integer.parseInt(a[place + 5]), Integer.parseInt(a[place + 6]), a[place + 4], a[place + 7]));
-                    v.equip(new Armor(Integer.parseInt(a[place + 11]), 0, Double.parseDouble(a[place + 10]), a[place + 9]));
-                    v.equip(new Shield(Integer.parseInt(a[place + 14]), 0, Integer.parseInt(a[place + 13]), a[place + 12]));
-                    v.equip(new Shoes(Integer.parseInt(a[place + 17]), 0, Integer.parseInt(a[place + 16]), a[place + 15]));
+                    v.equip(new Armor(Integer.parseInt(a[place + 11]), 0, Double.parseDouble(a[place + 10]), a[place + 9], a[place + 12]));
+                    v.equip(new Shield(Integer.parseInt(a[place + 15]), 0, Integer.parseInt(a[place + 14]), a[place + 13]));
+                    v.equip(new Shoes(Integer.parseInt(a[place + 18]), 0, Integer.parseInt(a[place + 17]), a[place + 16]));
                     entities.add(v);
-                    place += 18;
+                    place += 19;
                     break;
                 case 'P':
                     Potion p = new Potion(Integer.parseInt(a[place + 3]), Integer.parseInt(a[place + 1]), Integer.parseInt(a[place + 2]));
@@ -258,7 +258,7 @@ public class Driver{
             }else{
                 m.equip(new Weapon(2, 0, 10, 20, "Beat-up sword", "None"));
             }
-            m.equip(new Armor(4, 0, 1, "Tattered Armor"));
+            m.equip(new Armor(4, 0, 1, "Tattered Armor", "None"));
             m.equip(new Shoes(2, 0, (int) (Math.random() * 3), "Leather Shoes"));
             entities.add(m);
         }
@@ -279,7 +279,7 @@ public class Driver{
             }else{
                 m.equip(new Weapon(2, 0, 10, 20, "Monster sword", "None"));
             }
-            m.equip(new Armor(4, 0, 0.9, "Leather Armor"));
+            m.equip(new Armor(4, 0, 0.9, "Leather Armor", "None"));
             m.equip(new Shoes(2, 0, (int) (Math.random() * 5), "Leather Shoes"));
             entities.add(m);
         }
@@ -309,12 +309,31 @@ public class Driver{
         return entities;
     }
 
+    public static void monfight(Monster mon, Hero hero){
+        int dmg = mon.getSword().getDamage();
+        hero.setStatusEffect(mon.getSword().getInflicts());
+        if(hero.getArmor().getEffect().equals("Defence Up")){
+            dmg -= 10;
+        }else if (hero.getArmor().getEffect().equals("Thorns")){
+            System.out.println("The Monster took 8 damage from your Spiky Armor");
+            mon.loseHealth(8);
+        }else if (hero.getArmor().getEffect().equals("Attack Down")){
+            mon.setStatusEffect("Attack Down");
+        }
+        if (hero.loseHealth(dmg)) {
+            System.out.println("\nThe monster killed you\n");
+            System.exit(0);
+        } else {
+            System.out.println("\nThe Monster dealt " + dmg + " damage");
+        }
+    }
+
     public static void main(String[] args){
         Scanner scan = new Scanner(System.in);
         List<Object> entities = new ArrayList<Object>();
         Hero hero = new Hero(0, 100, 10, (int)(mapw/2), (int)(maph/2));
         hero.equip(new Weapon(2, 0, 20, 30, (RED_BOLD_BRIGHT + "Dagger"), "None"));
-        hero.equip(new Armor(4, 0, 1, (RED_BOLD_BRIGHT + "Starter Armor")));
+        hero.equip(new Armor(4, 0, 1, ("Spiky " + RED_BOLD_BRIGHT + "Starter Armor"), "Thorns"));
         entities.add(hero);
         boolean spawn = true;
         System.out.println("**Heroes and Monsters**");
@@ -418,7 +437,7 @@ public class Driver{
                         "; y: " + (16 -(y - numy)) + " - " + (16 - (y + (10 - numy))) + "\n");
                 Monster m = new Monster(200, x, y, 0, 'V');
                 m.equip(new Weapon(2, 0, 40, 60, "Gold Sword", "None"));
-                m.equip(new Armor(4, 0, 1, "T-shirt"));
+                m.equip(new Armor(4, 0, 1, "T-shirt", "None"));
                 m.equip(new Shoes(2, 0, 20, "Sandals"));
                 entities.add(m);
             }else if (hero.getMonstersdefeated() >= 16 && hero.getHolding_space() == 20){
@@ -455,7 +474,7 @@ public class Driver{
                         "; y: " + (16 -(y - numy)) + " - " + (16 - (y + (10 - numy))) + "\n");
                 Monster m = new Monster(400, x, y, 0, 'V');
                 m.equip(new Weapon(2, 0, 100, 110, "Platinum Blade", "Burn"));
-                m.equip(new Armor(4, 0, 0.8, "Chainmail"));
+                m.equip(new Armor(4, 0, 0.8, "Chainmail", "None"));
                 m.equip(new Shoes(2, 0, 20, "Iron boots"));
                 entities.add(m);
             }else if (hero.getMonstersdefeated() >= 32 && hero.getHolding_space() == 30){
@@ -571,26 +590,12 @@ public class Driver{
                                 int num = (int)(Math.random() * 50);
                                 if (hero.getShoes() != null) {
                                     if (num > hero.getShoes().getSpeed()) {
-                                        int dmg = mon.getSword().getDamage();
-                                        hero.setStatusEffect(mon.getSword().getInflicts());
-                                        if (hero.loseHealth(dmg)) {
-                                            System.out.println("\nThe monster killed you\n");
-                                            System.exit(0);
-                                        } else {
-                                            System.out.println("\nThe Monster dealt " + dmg + " damage\n");
-                                        }
+                                        monfight(mon, hero);
                                     } else {
                                         System.out.println("\nThe Monster missed\n");
                                     }
                                 }else{
-                                    int dmg = mon.getSword().getDamage();
-                                    hero.setStatusEffect(mon.getSword().getInflicts());
-                                    if (hero.loseHealth(dmg)) {
-                                        System.out.println("\nThe monster killed you\n");
-                                        System.exit(0);
-                                    } else {
-                                        System.out.println("\nThe Monster dealt " + dmg + " damage\n");
-                                    }
+                                    monfight(mon, hero);
                                 }
                             }
                             if(mon.getStatusEffect().equals("Freeze")){
@@ -771,9 +776,9 @@ public class Driver{
                         Blacksmith b = (Blacksmith)(m);
                         int int_input_b = 0;
                         while(true) {
-                            System.out.println("\nDo you want to reforge your sword (it costs 10)\n1.Yes\n2.No\n");
+                            System.out.println("\nWhat do you want to reforge (it costs 10)\n1.Sword\n2.Armor\n3.Nothing");
                             String input_b = scan.nextLine();
-                            if(input_b.equals("1") || input_b.equals("2")){
+                            if(input_b.equals("1") || input_b.equals("2") || input_b.equals("3")){
                                 int_input_b = Integer.parseInt(input_b);
                                 break;
                             }
@@ -781,10 +786,18 @@ public class Driver{
                         if(int_input_b == 1){
                             if (hero.getMoney() > 10) {
                                 hero.equip(b.reforge(hero.getSword()));
-                                System.out.println("\nYou sword got reforged\n");
+                                System.out.println("\nYour armor got reforged\n");
                             }
                             else{
-                                System.out.println("\nInnsufficient funds\n");
+                                System.out.println("\nInsufficient funds\n");
+                            }
+                        }else if (int_input_b == 2){
+                            if (hero.getMoney() > 10) {
+                                hero.equip(b.reforge(hero.getArmor()));
+                                System.out.println("\nYour armor got reforged\n");
+                            }
+                            else{
+                                System.out.println("\nInsufficient funds\n");
                             }
                         }
                     }
@@ -836,7 +849,7 @@ public class Driver{
                         entities = new ArrayList<Object>();
                         Monster finale_boss_mon = new Monster(1000, 5, 5, 0, 'V');
                         finale_boss_mon.equip(new Weapon(2, 0, 150, 175, "Ultimate Sword", "Attack Down"));
-                        finale_boss_mon.equip(new Armor(4, 0, 0.75, "Ruby Armor"));
+                        finale_boss_mon.equip(new Armor(4, 0, 0.75, "Ruby Armor", "None"));
                         finale_boss_mon.equip(new Shoes(2, 0, 20, "Crowned Shoes"));
                         entities.add(finale_boss);
                     }

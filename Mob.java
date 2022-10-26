@@ -117,7 +117,7 @@ public abstract class Mob {
             this.health -= health;
         }else{
             this.health -= health * this.getArmor().getDamage_reduction();
-            System.out.print("But the armor reduced it to: " + health * this.getArmor().getDamage_reduction() + "\n");
+            System.out.print("\nBut the armor reduced it to: " + health * this.getArmor().getDamage_reduction() + "\n\n");
         }
         return this.health <= 0;
     }
