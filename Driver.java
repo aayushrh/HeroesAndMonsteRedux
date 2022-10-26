@@ -34,9 +34,9 @@ public class Driver{
         return null;
     }
 
-    public static void createSaveFile(){
+    public static void createSaveFile(int num){
         try {
-            File myObj = new File("save.txt");
+            File myObj = new File("save" + num + ".txt");
             myObj.createNewFile();
         } catch (IOException e) {
             System.out.println("An error occurred.");
@@ -44,10 +44,10 @@ public class Driver{
         }
     }
 
-    public static void save(Hero hero, List<Object> entities){
-        createSaveFile();
+    public static void save(Hero hero, List<Object> entities, int save_file_num){
+        createSaveFile(save_file_num);
         try {
-            File file = new File("save.txt");
+            File file = new File("save" + save_file_num + ".txt");
             file.delete();
             FileWriter myWriter = new FileWriter("save.txt");
             myWriter.write(hero.saveText());
@@ -100,10 +100,10 @@ public class Driver{
         }
     }
 
-    public static void importSave(Hero hero, List<Object> entities){
+    public static void importSave(Hero hero, List<Object> entities, int num){
         List<String> input = new ArrayList<String>();
         try {
-            File myObj = new File("save.txt");
+            File myObj = new File("save" + num + ".txt");
             Scanner myReader = new Scanner(myObj);
             while (myReader.hasNextLine()) {
                 String data = myReader.nextLine();
@@ -330,7 +330,16 @@ public class Driver{
         }
         if(intinput_s == 2){
             spawn = false;
-            importSave(hero, entities);
+            int intinput_file = 0;
+            while(true){
+                System.out.println("Which save file would you like to import from? (1 - 4");
+                String input_file = scan.nextLine();
+                if(input_file.equals("1") || input_file.equals("2") || input_file.equals("3") || input_file.equals("4")){
+                    intinput_file = Integer.parseInt(input_file);
+                    break;
+                }
+            }
+            importSave(hero, entities, intinput_file);
         }
         if(spawn) {
             spawn(entities, 20, 10);
@@ -879,7 +888,16 @@ public class Driver{
                     System.out.println("\nYou do not have that peice of equipment\n");
                 }
             } else if (intinput_one == 8){
-                save(hero, entities);
+                int intinput_file = 0;
+                while(true){
+                    System.out.println("Which save file would you like to save to? (1 - 4");
+                    String input_file = scan.nextLine();
+                    if(input_file.equals("1") || input_file.equals("2") || input_file.equals("3") || input_file.equals("4")){
+                        intinput_file = Integer.parseInt(input_file);
+                        break;
+                    }
+                }
+                save(hero, entities, intinput_file);
             }
         }
     }
