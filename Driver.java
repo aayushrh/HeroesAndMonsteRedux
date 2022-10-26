@@ -49,7 +49,7 @@ public class Driver{
         try {
             File file = new File("save" + save_file_num + ".txt");
             file.delete();
-            FileWriter myWriter = new FileWriter("save.txt");
+            FileWriter myWriter = new FileWriter("save" + save_file_num + ".txt");
             myWriter.write(hero.saveText());
             for(int i = 0; i < entities.size(); i++){
                 Mob m = (Mob)(entities.get(i));
