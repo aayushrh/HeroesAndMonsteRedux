@@ -806,10 +806,10 @@ public class Driver{
                 }
                 printMap(hero, entities);
                 System.out.println("WASD to move\n" +
-                        "1 for potion\n" +
-                        "2 to view stats\n" +
-                        "3. to drop something\n" +
-                        "4. Save\n");
+                        "P for potion\n" +
+                        "V to view stats\n" +
+                        "R. to drop something\n" +
+                        "E. Save\n");
                 String input_one = scan.nextLine();
                 if (input_one.toLowerCase().equals("w")) {
                     intinput_one = 1;
@@ -819,13 +819,13 @@ public class Driver{
                     intinput_one = 3;
                 } else if (input_one.toLowerCase().equals("d")) {
                     intinput_one = 4;
-                } else if (input_one.equals("1")) {
+                } else if (input_one.toLowerCase().equals("p")) {
                     intinput_one = 5;
-                } else if (input_one.equals("2")) {
+                } else if (input_one.toLowerCase().equals("v")) {
                     intinput_one = 6;
-                } else if (input_one.equals("3")){
+                } else if (input_one.toLowerCase().equals("r")){
                     intinput_one = 7;
-                } else if (input_one.equals("4")){
+                } else if (input_one.toLowerCase().equals("e")){
                     intinput_one = 8;
                 }
 
