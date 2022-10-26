@@ -342,13 +342,14 @@ public class Driver{
         hero.equip(new Armor(4, 0, 1, ( RED_BOLD_BRIGHT + "Starter Armor"), "None"));
         entities.add(hero);
         boolean spawn = true;
-        System.out.println("**Heroes and Monsters**");
+        System.out.println("**Heroes and Monsters**\n**Epilepsy Warning** ");
         int intinput_s = 0;
         while (true) {
             System.out.println("1. Play\n" +
-                    "2. Go to last save state\n");
+                    "2. Go to last save state\n" +
+                    "3. Info\n");
             String input_s = scan.nextLine();
-            if(input_s.equals("2") || input_s.equals("1")){
+            if(input_s.equals("3") || input_s.equals("2") || input_s.equals("1")){
                 intinput_s = Integer.parseInt(input_s);
                 break;
             }
@@ -357,7 +358,7 @@ public class Driver{
             spawn = false;
             int intinput_file = 0;
             while(true){
-                System.out.println("Which save file would you like to import from? (1 - 4");
+                System.out.println("Which save file would you like to import from? (1 - 4)");
                 String input_file = scan.nextLine();
                 if(input_file.equals("1") || input_file.equals("2") || input_file.equals("3") || input_file.equals("4")){
                     intinput_file = Integer.parseInt(input_file);
@@ -365,6 +366,13 @@ public class Driver{
                 }
             }
             importSave(hero, entities, intinput_file);
+        } else if(intinput_s == 3){
+            System.out.println("So you see his game has a thing called holding space\n" +
+                    "Each item you have has an amount of space taken which you can see by looking at your stats\n" +
+                    "Your hero also has a certain amount of holding space that it can withstand\n" +
+                    "If you purchase an item that goes beyond the set holding limit it will drop on the ground\n" +
+                    "You Holding space will gradually upgrade as you go along your journey killing monsters\n" +
+                    "Have Fun!\n");
         }
         if(spawn) {
             spawn(entities, 20, 10);
