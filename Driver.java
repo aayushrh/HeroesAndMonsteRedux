@@ -776,7 +776,7 @@ public class Driver{
                         Blacksmith b = (Blacksmith)(m);
                         int int_input_b = 0;
                         while(true) {
-                            System.out.println("\nWhat do you want to reforge (it costs 10)\n1.Sword\n2.Armor\n3.Nothing");
+                            System.out.println("\nWhat do you want to reforge (it costs 10 for Weapon and 20 for Armor)\n1.Sword\n2.Armor\n3.Nothing");
                             String input_b = scan.nextLine();
                             if(input_b.equals("1") || input_b.equals("2") || input_b.equals("3")){
                                 int_input_b = Integer.parseInt(input_b);
@@ -784,17 +784,19 @@ public class Driver{
                             }
                         }
                         if(int_input_b == 1){
-                            if (hero.getMoney() > 10) {
+                            if (hero.getMoney() >= 10) {
                                 hero.equip(b.reforge(hero.getSword()));
                                 System.out.println("\nYour armor got reforged\n");
+                                hero.setMoney(hero.getMoney() - 10);
                             }
                             else{
                                 System.out.println("\nInsufficient funds\n");
                             }
                         }else if (int_input_b == 2){
-                            if (hero.getMoney() > 10) {
+                            if (hero.getMoney() >= 20) {
                                 hero.equip(b.reforge(hero.getArmor()));
                                 System.out.println("\nYour armor got reforged\n");
+                                hero.setMoney(hero.getMoney() - 20);
                             }
                             else{
                                 System.out.println("\nInsufficient funds\n");

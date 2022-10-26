@@ -26,8 +26,7 @@ public class Armor extends Equipment{
     }
 
     public String toString(){
-        return(super.toString() + "\tDamage Reduction: " + (Math.round((1.0 - this.damage_reduction) * 10)/10.0) +
-                ", Effect: " + this.effect + ANSI_RESET);
+        return(super.toString() + "\tDamage Reduction: " + (Math.round((1.0 - this.damage_reduction) * 10)/10.0) + ANSI_RESET);
     }
 
     public String saveText(){

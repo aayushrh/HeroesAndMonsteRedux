@@ -13,7 +13,7 @@ public class Blacksmith extends Mob{
         boolean switched = false;
         for (String i : weaponNames){
             if(weapon.getName().contains(i)){
-                weapon.setName(weaponNames[num] + weapon.getName().substring(i.length() + 1));
+                weapon.setName(weaponNames[num] + weapon.getName().substring(i.length()));
                 switched = true;
             }
         }
@@ -29,7 +29,7 @@ public class Blacksmith extends Mob{
         boolean switched = false;
         for (String i : armorNames){
             if(armor.getName().contains(i)){
-                armor.setName(armorNames[num] + armor.getName().substring(i.length() + 1));
+                armor.setName(armorNames[num] + armor.getName().substring(i.length()));
                 switched = true;
             }
         }
