@@ -67,6 +67,16 @@ public abstract class Mob {
                 this.getSword().setMaxdamage((int)(this.getSword().getMindamage() * 1.2));
                 System.out.println("\nJK its back\n");
             }
+        }else if (this.statusEffect.equals("Rage")){
+            if(this.statusCounter < 5){
+                this.statusCounter++;
+                this.getSword().setMindamage(this.getSword().getMindamage() + 5);
+                this.getSword().setMaxdamage(this.getSword().getMaxdamage() + 5);
+            }else{
+                this.getSword().setMindamage(this.getSword().getMindamage() - 25);
+                this.getSword().setMaxdamage(this.getSword().getMaxdamage() - 25);
+                this.statusEffect = "None";
+            }
         }
     }
 

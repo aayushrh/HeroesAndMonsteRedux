@@ -47,6 +47,8 @@ public class Driver{
     public static void save(Hero hero, List<Object> entities){
         createSaveFile();
         try {
+            File file = new File("save.txt");
+            file.delete();
             FileWriter myWriter = new FileWriter("save.txt");
             myWriter.write(hero.saveText());
             for(int i = 0; i < entities.size(); i++){
@@ -158,7 +160,16 @@ public class Driver{
         if (num > mon.getShoes().getSpeed()) {
             int dmg = hero.getSword().getDamage();
             System.out.println("You dealt " + dmg + " damage");
-            mon.setStatusEffect(hero.getSword().getInflicts());
+            if(!hero.getSword().getInflicts().equals("None") && !hero.getSword().getInflicts().equals("Rage") && !hero.getSword().getInflicts().equals("Freeze")) {
+                mon.setStatusEffect(hero.getSword().getInflicts());
+            }else if (hero.getSword().getInflicts().equals("Freeze")){
+                int chance = (int)(Math.random() * 2);
+                if(chance == 0){
+                    mon.setStatusEffect(hero.getSword().getInflicts());
+                }else{
+                    System.out.println("\nYou failed to freeze the monster\n");
+                }
+            }
             if (mon.loseHealth(dmg)) {
                 System.out.println("You defeated the monster\n");
                 System.out.println("You gained " + mon.getMoney_drop() + " coins\n");
@@ -306,7 +317,7 @@ public class Driver{
         hero.equip(new Armor(4, 0, 1, (RED_BOLD_BRIGHT + "Starter Armor")));
         entities.add(hero);
         boolean spawn = true;
-        System.out.println("**Heroes and Monsters");
+        System.out.println("**Heroes and Monsters**");
         int intinput_s = 0;
         while (true) {
             System.out.println("1. Play\n" +
@@ -392,6 +403,10 @@ public class Driver{
                         break;
                     }
                 }
+                int numx = (int)(Math.random() * 4) + 1;
+                int numy = (int)(Math.random() * 4) + 1;
+                System.out.println("\nThe boss is within: x: " + (x - numx) + " - " + (x + (10 - numx)) +
+                        "; y: " + (16 -(y - numy)) + " - " + (16 - (y + (10 - numy))) + "\n");
                 Monster m = new Monster(200, x, y, 0, 'V');
                 m.equip(new Weapon(2, 0, 40, 60, "Gold Sword", "None"));
                 m.equip(new Armor(4, 0, 1, "T-shirt"));
@@ -425,6 +440,10 @@ public class Driver{
                         break;
                     }
                 }
+                int numx = (int)(Math.random() * 4) + 1;
+                int numy = (int)(Math.random() * 4) + 1;
+                System.out.println("\nThe boss is within: x: " + (x - numx) + " - " + (x + (10 - numx)) +
+                        "; y: " + (16 -(y - numy)) + " - " + (16 - (y + (10 - numy))) + "\n");
                 Monster m = new Monster(400, x, y, 0, 'V');
                 m.equip(new Weapon(2, 0, 100, 110, "Platinum Blade", "Burn"));
                 m.equip(new Armor(4, 0, 0.8, "Chainmail"));
@@ -539,7 +558,7 @@ public class Driver{
                                     }
                                 }
                             }
-                            if (hit){
+                            if (hit && mon.getStatusEffect() != "Freeze"){
                                 int num = (int)(Math.random() * 50);
                                 if (hero.getShoes() != null) {
                                     if (num > hero.getShoes().getSpeed()) {
@@ -564,6 +583,9 @@ public class Driver{
                                         System.out.println("\nThe Monster dealt " + dmg + " damage\n");
                                     }
                                 }
+                            }
+                            if(mon.getStatusEffect().equals("Freeze")){
+                                System.out.println("The monster is frozen");
                             }
                         }
                         hero.setStatusEffect("None");
