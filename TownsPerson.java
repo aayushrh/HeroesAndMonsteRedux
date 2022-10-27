@@ -1,7 +1,10 @@
 public class TownsPerson extends Mob{
-    public static final String RED_BOLD_BRIGHT = "\033[1;91m";   // RED
-    public static final String GREEN_BOLD_BRIGHT = "\033[1;92m"; // GREEN
-    public static final String YELLOW_BOLD_BRIGHT = "\033[1;93m";// YELLOW
+    //public static final String RED_BOLD_BRIGHT = "\033[1;91m";   // RED
+    public static final String RED_BOLD_BRIGHT = "";   // RED
+    //public static final String GREEN_BOLD_BRIGHT = "\033[1;92m"; // GREEN
+    public static final String GREEN_BOLD_BRIGHT = ""; // GREEN
+    //public static final String YELLOW_BOLD_BRIGHT = "\033[1;93m";// YELLOW
+    public static final String YELLOW_BOLD_BRIGHT = "";// YELLOW
     //public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_RESET = "";
     private Weapon weaponlist[] = {
