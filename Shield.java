@@ -1,5 +1,6 @@
 public class Shield extends Equipment{
-    public static final String ANSI_RESET = "\u001B[0m";
+    //public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_RESET = "";
     private int block;
 
     public int getBlock() {

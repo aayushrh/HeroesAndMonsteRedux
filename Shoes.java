@@ -1,5 +1,6 @@
 public class Shoes extends Equipment{
-    public static final String ANSI_RESET = "\u001B[0m";
+    //public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_RESET = "";
     private int speed;
 
     public Shoes(int space_taken, int cost, int speed, String name) {

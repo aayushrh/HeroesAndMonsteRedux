@@ -2,7 +2,8 @@ public class TownsPerson extends Mob{
     public static final String RED_BOLD_BRIGHT = "\033[1;91m";   // RED
     public static final String GREEN_BOLD_BRIGHT = "\033[1;92m"; // GREEN
     public static final String YELLOW_BOLD_BRIGHT = "\033[1;93m";// YELLOW
-    public static final String ANSI_RESET = "\u001B[0m";
+    //public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_RESET = "";
     private Weapon weaponlist[] = {
             new Weapon(1, 10, 10, 20, ("Flaming " + RED_BOLD_BRIGHT +  "Short Dagger"), "Burn"),
             new Weapon(2, 20, 20, 30, (YELLOW_BOLD_BRIGHT + "Longsword"), "None"),

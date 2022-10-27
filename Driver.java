@@ -5,12 +5,16 @@ import java.io.FileWriter;
 import java.io.FileNotFoundException;
 
 public class Driver{
-    public static final String ANSI_RESET = "\u001B[0m";
-    public static final String RED_BOLD_BRIGHT = "\033[1;91m";   // RED
-    public static final String GREEN_BOLD_BRIGHT = "\033[1;92m"; // GREEN
-    public static final String BLUE_BOLD_BRIGHT = "\033[1;94m";  // BLUE
-    public static final String PURPLE_BOLD_BRIGHT = "\033[1;95m";// PURPLE
-    public static final String IDK = "\\u001b[41m";
+    //public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_RESET = "";
+    //public static final String RED_BOLD_BRIGHT = "\033[1;91m";   // RED
+    public static final String RED_BOLD_BRIGHT = "";   // RED
+    //public static final String GREEN_BOLD_BRIGHT = "\033[1;92m"; // GREEN
+    public static final String GREEN_BOLD_BRIGHT = ""; // GREEN
+    //public static final String BLUE_BOLD_BRIGHT = "\033[1;94m";  // BLUE
+    public static final String BLUE_BOLD_BRIGHT = "";  // BLUE
+    //public static final String PURPLE_BOLD_BRIGHT = "\033[1;95m";// PURPLE
+    public static final String PURPLE_BOLD_BRIGHT = "";// PURPLE
     public static int mapw = 30;
     public static int maph = 30;
     public static double looking_distance = 2.5;
@@ -206,6 +210,8 @@ public class Driver{
             miny = hero.getY() - 5;
             maxy = hero.getY() + 5;
         }
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
         for(int i = miny; i < maxy; i++){
             for(int j = minx; j < maxx; j++){
                 boolean printed = false;
