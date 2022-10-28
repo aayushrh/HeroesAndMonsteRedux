@@ -1,6 +1,4 @@
 public class Shield extends Equipment{
-    //public static final String ANSI_RESET = "\u001B[0m";
-    public static final String ANSI_RESET = "";
     private int block;
 
     public int getBlock() {
@@ -17,7 +15,7 @@ public class Shield extends Equipment{
     }
 
     public String toString(){
-        return(super.toString() + "\tBlock: " + this.block + ANSI_RESET);
+        return(super.toString() + "\tBlock: " + this.block + Constants.ANSI_RESET);
     }
 
     public String saveText(){

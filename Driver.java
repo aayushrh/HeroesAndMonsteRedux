@@ -5,26 +5,16 @@ import java.io.FileWriter;
 import java.io.FileNotFoundException;
 
 public class Driver{
-    //public static final String ANSI_RESET = "\u001B[0m";
-    public static final String ANSI_RESET = "";
-    //public static final String RED_BOLD_BRIGHT = "\033[1;91m";   // RED
-    public static final String RED_BOLD_BRIGHT = "";   // RED
-    //public static final String GREEN_BOLD_BRIGHT = "\033[1;92m"; // GREEN
-    public static final String GREEN_BOLD_BRIGHT = ""; // GREEN
-    //public static final String BLUE_BOLD_BRIGHT = "\033[1;94m";  // BLUE
-    public static final String BLUE_BOLD_BRIGHT = "";  // BLUE
-    //public static final String PURPLE_BOLD_BRIGHT = "\033[1;95m";// PURPLE
-    public static final String PURPLE_BOLD_BRIGHT = "";// PURPLE
     public static int mapw = 30;
     public static int maph = 30;
     public static double looking_distance = 2.5;
-    public static String key[] = { "Key", (RED_BOLD_BRIGHT + "R" + ANSI_RESET + " is Regular Monster"),
-            (RED_BOLD_BRIGHT + "S" + ANSI_RESET + " is Super Monster"),
-            (RED_BOLD_BRIGHT + "V" + ANSI_RESET + " is Boss"),
-            (PURPLE_BOLD_BRIGHT + "P" + ANSI_RESET + " is Potion"),
-            (BLUE_BOLD_BRIGHT + "T" + ANSI_RESET + " is Shopkeeper"),
-            (BLUE_BOLD_BRIGHT + "B" + ANSI_RESET + " is Blacksmith"),
-            (BLUE_BOLD_BRIGHT + "H" + ANSI_RESET + " is you"),
+    public static String key[] = { "Key", (Constants.RED_BOLD_BRIGHT + "R" + Constants.ANSI_RESET + " is Regular Monster"),
+            (Constants.RED_BOLD_BRIGHT + "S" + Constants.ANSI_RESET + " is Super Monster"),
+            (Constants.RED_BOLD_BRIGHT + "V" + Constants.ANSI_RESET + " is Boss"),
+            (Constants.PURPLE_BOLD_BRIGHT + "P" + Constants.ANSI_RESET + " is Potion"),
+            (Constants.BLUE_BOLD_BRIGHT + "T" + Constants.ANSI_RESET + " is Shopkeeper"),
+            (Constants.BLUE_BOLD_BRIGHT + "B" + Constants.ANSI_RESET + " is Blacksmith"),
+            (Constants.BLUE_BOLD_BRIGHT + "H" + Constants.ANSI_RESET + " is you"),
             "", "", "" };
     public static Mob check(int x, int y, List<Mob> entities){
         for(Mob m : entities){
@@ -130,19 +120,19 @@ public class Driver{
                 case 'R':
                     Monster m = new Monster(Integer.parseInt(a[place + 3]), Integer.parseInt(a[place + 1]), Integer.parseInt(a[place + 2]),Integer.parseInt(a[place + 4]), type);
                     m.equip(new Weapon(Integer.parseInt(a[place + 9]), 0, Integer.parseInt(a[place + 6]), Integer.parseInt(a[place + 7]), a[place + 5], a[place + 8]));
-                    m.equip(new Armor(Integer.parseInt(a[place + 12]), 0, Double.parseDouble(a[place + 11]), a[place + 10], a[place + 13]));
-                    m.equip(new Shoes(Integer.parseInt(a[place + 16]), 0, Integer.parseInt(a[place + 15]), a[place + 14]));
+                    m.equip(new Armor(Integer.parseInt(a[place + 12]), 0, Double.parseDouble(a[place + 11]), a[place + 10], a[place + 13], Integer.parseInt(a[place + 14])));
+                    m.equip(new Shoes(Integer.parseInt(a[place + 17]), 0, Integer.parseInt(a[place + 16]), a[place + 15]));
                     entities.add(m);
-                    place += 17;
+                    place += 18;
                     break;
                 case 'T':
                     TownsPerson v = new TownsPerson(Integer.parseInt(a[place + 3]), Integer.parseInt(a[place + 1]), Integer.parseInt(a[place + 2]));
                     v.equip(new Weapon(Integer.parseInt(a[place + 8]), 0, Integer.parseInt(a[place + 5]), Integer.parseInt(a[place + 6]), a[place + 4], a[place + 7]));
-                    v.equip(new Armor(Integer.parseInt(a[place + 11]), 0, Double.parseDouble(a[place + 10]), a[place + 9], a[place + 12]));
-                    v.equip(new Shield(Integer.parseInt(a[place + 15]), 0, Integer.parseInt(a[place + 14]), a[place + 13]));
-                    v.equip(new Shoes(Integer.parseInt(a[place + 18]), 0, Integer.parseInt(a[place + 17]), a[place + 16]));
+                    v.equip(new Armor(Integer.parseInt(a[place + 11]), 0, Double.parseDouble(a[place + 10]), a[place + 9], a[place + 12], Integer.parseInt(a[place + 13])));
+                    v.equip(new Shield(Integer.parseInt(a[place + 16]), 0, Integer.parseInt(a[place + 15]), a[place + 14]));
+                    v.equip(new Shoes(Integer.parseInt(a[place + 19]), 0, Integer.parseInt(a[place + 18]), a[place + 17]));
                     entities.add(v);
-                    place += 19;
+                    place += 20;
                     break;
                 case 'P':
                     Potion p = new Potion(Integer.parseInt(a[place + 3]), Integer.parseInt(a[place + 1]), Integer.parseInt(a[place + 2]));
@@ -219,11 +209,11 @@ public class Driver{
                     if(m.getX() == j && m.getY() == i){
                         if(m.isInteracted() || Math.sqrt(Math.pow(hero.getX() - m.getX(),2) + Math.pow(hero.getY() - m.getY(), 2)) <= looking_distance) {
                             if(m.getType().charAt(1) == 'M') {
-                                System.out.print("\t" + RED_BOLD_BRIGHT + m.getType().charAt(0) + ANSI_RESET);
+                                System.out.print("\t" + Constants.RED_BOLD_BRIGHT + m.getType().charAt(0) + Constants.ANSI_RESET);
                             }else if (m.getType().charAt(0) == 'P'){
-                                System.out.print("\t" + PURPLE_BOLD_BRIGHT + m.getType().charAt(0) + ANSI_RESET);
+                                System.out.print("\t" + Constants.PURPLE_BOLD_BRIGHT + m.getType().charAt(0) + Constants.ANSI_RESET);
                             }else{
-                                System.out.print("\t" + BLUE_BOLD_BRIGHT + m.getType().charAt(0) + ANSI_RESET);
+                                System.out.print("\t" + Constants.BLUE_BOLD_BRIGHT + m.getType().charAt(0) + Constants.ANSI_RESET);
                             }
                             printed = true;
                             break;
@@ -234,7 +224,7 @@ public class Driver{
                     if(Math.sqrt(Math.pow(hero.getX() - j,2) + Math.pow(hero.getY() - i, 2)) >= looking_distance){
                         System.out.print("\t" + "?");
                     }else{
-                        System.out.print("\t" + GREEN_BOLD_BRIGHT + "-" + ANSI_RESET);
+                        System.out.print("\t" + Constants.GREEN_BOLD_BRIGHT + "-" + Constants.ANSI_RESET);
                     }
                 }
             }
@@ -261,7 +251,7 @@ public class Driver{
             }else{
                 m.equip(new Weapon(2, 0, 10, 20, "Beat-up sword", "None"));
             }
-            m.equip(new Armor(4, 0, 1, "Tattered Armor", "None"));
+            m.equip(new Armor(4, 0, 1, "Tattered Armor", "None", 0));
             m.equip(new Shoes(2, 0, (int) (Math.random() * 3), "Leather Shoes"));
             entities.add(m);
         }
@@ -282,7 +272,7 @@ public class Driver{
             }else{
                 m.equip(new Weapon(2, 0, 10, 20, "Monster sword", "None"));
             }
-            m.equip(new Armor(4, 0, 0.9, "Leather Armor", "None"));
+            m.equip(new Armor(4, 0, 0.9, "Leather Armor", "None", 0));
             m.equip(new Shoes(2, 0, (int) (Math.random() * 5), "Leather Shoes"));
             entities.add(m);
         }
@@ -344,8 +334,8 @@ public class Driver{
         Scanner scan = new Scanner(System.in);
         List<Mob> entities = new ArrayList<Mob>();
         Hero hero = new Hero(0, 100, 10, (int)(mapw/2), (int)(maph/2));
-        hero.equip(new Weapon(2, 0, 20, 30, (RED_BOLD_BRIGHT + "Dagger"), "None"));
-        hero.equip(new Armor(4, 0, 1, ( RED_BOLD_BRIGHT + "Starter Armor"), "None"));
+        hero.equip(new Weapon(2, 0, 20, 30, (Constants.RED_BOLD_BRIGHT + "Dagger"), "None"));
+        hero.equip(new Armor(4, 0, 1, ( Constants.RED_BOLD_BRIGHT + "Starter Armor"), "None", 0));
         entities.add(hero);
         boolean spawn = true;
         System.out.println("**Heroes and Monsters**\n**Epilepsy Warning** ");
@@ -457,7 +447,7 @@ public class Driver{
                         "; y: " + (16 -(y - numy)) + " - " + (16 - (y + (10 - numy))) + "\n");
                 Monster m = new Monster(200, x, y, 0, 'V');
                 m.equip(new Weapon(2, 0, 40, 60, "Gold Sword", "None"));
-                m.equip(new Armor(4, 0, 1.0, "T-shirt", "None"));
+                m.equip(new Armor(4, 0, 1.0, "T-shirt", "None", 0));
                 m.equip(new Shoes(2, 0, 20, "Sandals"));
                 entities.add(m);
             }else if (hero.getMonstersdefeated() >= 16 && hero.getHolding_space() == 20){
@@ -494,7 +484,7 @@ public class Driver{
                         "; y: " + (16 -(y - numy)) + " - " + (16 - (y + (10 - numy))) + "\n");
                 Monster m = new Monster(400, x, y, 0, 'V');
                 m.equip(new Weapon(2, 0, 100, 110, "Platinum Blade", "Burn"));
-                m.equip(new Armor(4, 0, 0.8, "Chainmail", "None"));
+                m.equip(new Armor(4, 0, 0.8, "Chainmail", "None", 0));
                 m.equip(new Shoes(2, 0, 20, "Iron boots"));
                 entities.add(m);
             }else if (hero.getMonstersdefeated() >= 32 && hero.getHolding_space() == 30){
@@ -522,19 +512,22 @@ public class Driver{
                     if(m.getType().substring(1).equals("Monster")){
                         Monster mon = (Monster)(m);
                         while(true){
+                            hero.updateMana();
                             hero.update();
                             mon.update();
                             int int_input_f = 0;
                             while(true) {
                                 System.out.println(mon);
                                 System.out.println("Your Health: " + hero.getHealth() +
-                                        "\n" + "Status Effect: " + hero.getStatusEffect());
+                                        "\n" + "Status Effect: " + hero.getStatusEffect() +
+                                        "\n" + "Mana: " + hero.getMana());
                                 System.out.println("\n1.Fight\n" +
                                         "2.Parry\n" +
                                         "3.Potion\n" +
-                                        "4.Escape");
+                                        "4.Spell\n" +
+                                        "5.Escape");
                                 String input_f = scan.nextLine();
-                                if (input_f.equals("1") || input_f.equals("2") || input_f.equals("3") || input_f.equals("4")) {
+                                if (input_f.equals("1") || input_f.equals("2") || input_f.equals("3") || input_f.equals("4") || input_f.equals("5")) {
                                     int_input_f = Integer.parseInt(input_f);
                                 }
                                 if(int_input_f != 0){
@@ -585,6 +578,42 @@ public class Driver{
                                 hero.potionUse();
                                 hit = false;
                             }else if (int_input_f == 4){
+                                hit = false;
+                                int_input_f = 0;
+                                while(true) {
+                                    if(hero.getMonstersdefeated() > 7) System.out.println("1. Intense Burn"); else System.out.println("1. Locked until 7 Monsters Defeated");
+                                    if(hero.getMonstersdefeated() > 12) System.out.println("2. Defense Up"); else System.out.println("2. Locked until 12 Monsters Defeated");
+                                    if(hero.getMonstersdefeated() > 16) System.out.println("3. Attack Up"); else System.out.println("3. Locked until 16 Monsters Defeated");
+                                    if(hero.getMonstersdefeated() > 23) System.out.println("4. Dodge"); else System.out.println("4. Locked until 23 Monsters Defeated");
+                                    String input_f = scan.nextLine();
+                                    if (input_f.equals("1") || input_f.equals("2") || input_f.equals("3") || input_f.equals("4")) {
+                                        int_input_f = Integer.parseInt(input_f);
+                                    }
+                                    if(int_input_f != 0){
+                                        break;
+                                    }else{
+                                        System.out.println("\nPlease input the options you have\n");
+                                    }
+                                }
+                                switch(int_input_f){
+                                    case 1:
+                                        if(hero.getMana() > 40 && hero.getMonstersdefeated() > 7){
+                                            mon.setStatusEffect("Intense Burn");
+                                        }
+                                    case 2:
+                                        if(hero.getMana() > 30 && hero.getMonstersdefeated() > 12){
+                                            hero.setStatusEffect("Defense Up");
+                                        }
+                                    case 3:
+                                        if(hero.getMana() > 30 && hero.getMonstersdefeated() > 16){
+                                            hero.setStatusEffect("Attack Up");
+                                        }
+                                    case 4:
+                                        if(hero.getMana() > 30 && hero.getMonstersdefeated() > 23){
+                                            hero.setStatusEffect("Epic Speed");
+                                        }
+                                }
+                            }else if (int_input_f == 5){
                                 int num = (int)(Math.random() * 5) + 1;
                                 System.out.println("Num: " + num + ", Shoes" + hero.getShoes());
                                 if (hero.getShoes() == null) {
@@ -912,7 +941,7 @@ public class Driver{
                         hero.setY(1);
                         Monster finale_boss_mon = new Monster(1000, 5, 5, 0, 'V');
                         finale_boss_mon.equip(new Weapon(2, 0, 150, 175, "Ultimate Sword", "Attack Down"));
-                        finale_boss_mon.equip(new Armor(4, 0, 0.75, "Ruby Armor", "None"));
+                        finale_boss_mon.equip(new Armor(4, 0, 0.75, "Ruby Armor", "None", 0));
                         finale_boss_mon.equip(new Shoes(2, 0, 20, "Crowned Shoes"));
                         entities.add(finale_boss_mon);
                     }

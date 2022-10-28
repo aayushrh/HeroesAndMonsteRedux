@@ -1,6 +1,4 @@
 public class Weapon extends Equipment{
-    //public static final String ANSI_RESET = "\u001B[0m";
-    public static final String ANSI_RESET = "";
     private int maxdamage;
     private int mindamage;
     private String inflicts;
@@ -42,7 +40,7 @@ public class Weapon extends Equipment{
     }
 
     public String toString(){
-        return(super.toString() + "\tMin Damage: " + this.mindamage + "\tMax Damage: " + this.maxdamage + ANSI_RESET);
+        return(super.toString() + "\tMin Damage: " + this.mindamage + "\tMax Damage: " + this.maxdamage + Constants.ANSI_RESET);
     }
 
     public String saveText(){

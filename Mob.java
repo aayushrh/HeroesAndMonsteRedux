@@ -11,6 +11,7 @@ public abstract class Mob {
     private boolean interacted;
     //temp vars
     private double prevArmor;
+    private double prevSpeed;
 
     public Mob(int holding_space, int health, int x, int y, String type) {
         this.holding_space = holding_space;
@@ -25,11 +26,18 @@ public abstract class Mob {
     }
 
     public boolean setStatusEffect(String statusEffect) {
-        if(this.statusEffect.equals("None")) {
+        if(!statusEffect.equals("None")) {
+            if (this.statusEffect.equals("None")) {
+                this.statusEffect = statusEffect;
+                this.statusCounter = 0;
+            } else {
+                return false;
+            }
+        }else{
+            this.statusCounter = 100;
+            this.update();
             this.statusEffect = statusEffect;
             this.statusCounter = 0;
-        }else{
-            return false;
         }
         return true;
     }
@@ -46,6 +54,12 @@ public abstract class Mob {
             if(this.statusCounter > 5){
                 this.statusEffect = "None";
             }
+        }else if(this.statusEffect.equals("Intense Burn")){
+            this.loseHealth(5);
+            System.out.println("\nYou took 15 damage from Burn\n");
+            if(this.statusCounter > 5){
+                this.statusEffect = "None";
+            }
         }else if (this.statusEffect.equals("Armor Down")){
             if(this.statusCounter == 1) {
                 prevArmor = this.getArmor().getDamage_reduction();
@@ -54,6 +68,16 @@ public abstract class Mob {
             }else if (this.statusCounter >= 3){
                 this.statusEffect = "None";
                 this.getArmor().setDamage_reduction(prevArmor);
+                System.out.println("\nJK is back\n");
+            }
+        }else if (this.statusEffect.equals("Armor Up")){
+            if(this.statusCounter == 1) {
+                prevArmor = this.getArmor().getDamage_reduction();
+                this.getArmor().setDamage_reduction(this.getArmor().getDamage_reduction() * 0.5);
+                System.out.println("\nYour Armor has been strengthened\n");
+            }else if (this.statusCounter >= 3){
+                this.statusEffect = "None";
+                this.getArmor().setDamage_reduction(this.getArmor().getDamage_reduction() * 1.5);
                 System.out.println("\nJK is back\n");
             }
         }else if (this.statusEffect.equals("Attack Down")){
@@ -66,6 +90,27 @@ public abstract class Mob {
                 this.getSword().setMaxdamage((int)(this.getSword().getMaxdamage() * 1.2));
                 this.getSword().setMaxdamage((int)(this.getSword().getMindamage() * 1.2));
                 System.out.println("\nJK its back\n");
+            }
+        }else if (this.statusEffect.equals("Attack Up")){
+            if(this.statusCounter == 1) {
+                this.getSword().setMaxdamage((int)(this.getSword().getMaxdamage() * 1.2));
+                this.getSword().setMaxdamage((int)(this.getSword().getMindamage() * 1.2));
+                System.out.println("\nYour Weapon has been strengthened\n");
+            }else if (this.statusCounter >= 3){
+                this.statusEffect = "None";
+                this.getSword().setMaxdamage((int)(this.getSword().getMaxdamage() / 1.2));
+                this.getSword().setMaxdamage((int)(this.getSword().getMindamage() / 1.2));
+                System.out.println("\nJK its back\n");
+            }
+        }else if (this.statusEffect.equals("Epic Speed")){
+            if(this.statusCounter == 1) {
+                prevSpeed = this.getShoes().getSpeed();
+                this.getShoes().setSpeed(100000);
+                System.out.println("\nYou can now dodge\n");
+            }else if (this.statusCounter >= 3){
+                this.statusEffect = "None";
+                this.getShoes().setSpeed((int)prevSpeed);
+                System.out.println("\nJK is back\n");
             }
         }else if (this.statusEffect.equals("Rage")){
             if(this.statusCounter < 5){
