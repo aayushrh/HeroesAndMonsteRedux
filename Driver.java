@@ -338,6 +338,7 @@ public class Driver{
         hero.equip(new Armor(4, 0, 1, ( Constants.RED_BOLD_BRIGHT + "Starter Armor"), "None", 0));
         entities.add(hero);
         boolean spawn = true;
+        boolean boss_killed = false;
         System.out.println("**Heroes and Monsters**\n**Epilepsy Warning** ");
         int intinput_s = 0;
         while (true) {
@@ -450,7 +451,7 @@ public class Driver{
                 m.equip(new Armor(4, 0, 1.0, "T-shirt", "None", 0));
                 m.equip(new Shoes(2, 0, 20, "Sandals"));
                 entities.add(m);
-            }else if (hero.getMonstersdefeated() >= 16 && hero.getHolding_space() == 20){
+            }else if (hero.getMonstersdefeated() >= 16 && hero.getHolding_space() == 20 && boss_killed){
                 hero.setHolding_space(25);
                 System.out.println("\nYou bag got upgraded to 25 holding space\n");
                 System.out.println("'Argh', cried the Monster\n" +
@@ -463,6 +464,7 @@ public class Driver{
                 hero.setMoney(hero.getMoney() + 100);
                 entities = restockVillagers(entities, 2);
                 spawn(entities, 10, 9);
+                boss_killed = false;
             }else if (hero.getMonstersdefeated() >= 31 && hero.getHolding_space() == 25){
                 hero.setHolding_space(30);
                 System.out.println("\nYou bag got upgraded to 30 holding space\n");
@@ -487,7 +489,7 @@ public class Driver{
                 m.equip(new Armor(4, 0, 0.8, "Chainmail", "None", 0));
                 m.equip(new Shoes(2, 0, 20, "Iron boots"));
                 entities.add(m);
-            }else if (hero.getMonstersdefeated() >= 32 && hero.getHolding_space() == 30){
+            }else if (hero.getMonstersdefeated() >= 32 && hero.getHolding_space() == 30 && boss_killed){
                 hero.setHolding_space(35);
                 System.out.println("\nYou bag got upgraded to 30 holding space\n");
                 System.out.println("It's Dead\n" +
@@ -505,6 +507,7 @@ public class Driver{
                 hero.setMoney(hero.getMoney() + 150);
                 finale_boss = true;
                 spawn(entities, 0, 0);
+                boss_killed = false;
             }
             while(true) {
                 Mob m = check(hero.getX(), hero.getY(), entities);
@@ -540,6 +543,9 @@ public class Driver{
                             if (int_input_f == 1){
                                 if(fight(hero, mon)){
                                     entities.remove(m);
+                                    if(m.getType().charAt(0) == 'V'){
+                                        boss_killed = true;
+                                    }
                                     break;
                                 }
                             }else if (int_input_f == 2){
@@ -581,12 +587,13 @@ public class Driver{
                                 hit = false;
                                 int_input_f = 0;
                                 while(true) {
-                                    if(hero.getMonstersdefeated() > 7) System.out.println("1. Intense Burn"); else System.out.println("1. Locked until 7 Monsters Defeated");
-                                    if(hero.getMonstersdefeated() > 12) System.out.println("2. Defense Up"); else System.out.println("2. Locked until 12 Monsters Defeated");
-                                    if(hero.getMonstersdefeated() > 16) System.out.println("3. Attack Up"); else System.out.println("3. Locked until 16 Monsters Defeated");
-                                    if(hero.getMonstersdefeated() > 23) System.out.println("4. Dodge"); else System.out.println("4. Locked until 23 Monsters Defeated");
+                                    if(hero.getMonstersdefeated() > 7) System.out.println("1. Intense Burn(40)"); else System.out.println("1. Locked until 7 Monsters Defeated");
+                                    if(hero.getMonstersdefeated() > 12) System.out.println("2. Defense Up(30)"); else System.out.println("2. Locked until 12 Monsters Defeated");
+                                    if(hero.getMonstersdefeated() > 16) System.out.println("3. Attack Up(30)"); else System.out.println("3. Locked until 16 Monsters Defeated");
+                                    if(hero.getMonstersdefeated() > 23) System.out.println("4. Dodge(30)"); else System.out.println("4. Locked until 23 Monsters Defeated");
+                                    System.out.println("5. Exit");
                                     String input_f = scan.nextLine();
-                                    if (input_f.equals("1") || input_f.equals("2") || input_f.equals("3") || input_f.equals("4")) {
+                                    if (input_f.equals("1") || input_f.equals("2") || input_f.equals("3") || input_f.equals("4") || input_f.equals("5")) {
                                         int_input_f = Integer.parseInt(input_f);
                                     }
                                     if(int_input_f != 0){
@@ -599,18 +606,22 @@ public class Driver{
                                     case 1:
                                         if(hero.getMana() > 40 && hero.getMonstersdefeated() > 7){
                                             mon.setStatusEffect("Intense Burn");
+                                            hero.setMana(hero.getMana() - 40);
                                         }
                                     case 2:
                                         if(hero.getMana() > 30 && hero.getMonstersdefeated() > 12){
                                             hero.setStatusEffect("Defense Up");
+                                            hero.setMana(hero.getMana() - 30);
                                         }
                                     case 3:
                                         if(hero.getMana() > 30 && hero.getMonstersdefeated() > 16){
                                             hero.setStatusEffect("Attack Up");
+                                            hero.setMana(hero.getMana() - 30);
                                         }
                                     case 4:
                                         if(hero.getMana() > 30 && hero.getMonstersdefeated() > 23){
                                             hero.setStatusEffect("Epic Speed");
+                                            hero.setMana(hero.getMana() - 30);
                                         }
                                 }
                             }else if (int_input_f == 5){
@@ -972,9 +983,10 @@ public class Driver{
                 int int_input_f = 0;
                 while(true) {
                     System.out.println("\n1.Shield\n" +
-                            "2.Shoes\n");
+                            "2.Shoes\n" +
+                            "3.Nothing\n");
                     String input_f = scan.nextLine();
-                    if (input_f.equals("1") || input_f.equals("2")) {
+                    if (input_f.equals("1") || input_f.equals("2") || input_f.equals("3")) {
                         int_input_f = Integer.parseInt(input_f);
                     }
                     if(int_input_f != 0){
